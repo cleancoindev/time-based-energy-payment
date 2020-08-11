@@ -47,3 +47,6 @@ $ npm run migrate:kovan
 ***
 
 ## 【References】
+- Matic (Document)
+  - Getting started  
+    https://docs.matic.network/docs/develop/maticjs/getting-started
