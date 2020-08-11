@@ -27,7 +27,10 @@
     "@openzeppelin/contracts": "^2.5.1",
     "@truffle/hdwallet-provider": "^1.0.29",
     "dotenv": "^8.2.0",
-    "eth-block-tracker": "^4.4.3"
+    "eth-block-tracker": "^4.4.3",
+
+    "@maticnetwork/maticjs": "^2.0.2",
+    "@maticnetwork/meta": "^2.3.3"
   },
   "devDependencies": {}
 }
