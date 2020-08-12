@@ -6,8 +6,7 @@ const MaticEnergy = artifacts.require('MaticEnergy');
 
 /// Module
 const Matic = require('@maticnetwork/maticjs').default
-const config = require('../utils/matic-config.json')
-
+//const config = require('../utils/matic-config.json')
 
 contract('MaticEnergy', accounts => {
 

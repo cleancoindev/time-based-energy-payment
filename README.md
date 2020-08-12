@@ -2,6 +2,9 @@
 
 ***
 ## 【Introduction of Matic Energy ⚡️】
+- Stack
+  - Solidity-v0.6.12
+  - @openzeppelin/contracts-v3.1.0 
 
 
 &nbsp;
