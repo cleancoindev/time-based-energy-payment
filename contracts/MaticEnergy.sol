@@ -20,6 +20,16 @@ import "./storage/McConstants.sol";
 contract MaticEnergy is OwnableOriginal(msg.sender), McStorage, McEvents, McConstants {
     using SafeMath for uint;
 
+    string greeting;
+
     constructor() public {}
+
+    function greet(string memory _greeting) public {
+        greeting = _greeting;
+    }
+
+    function getGreeting() public view returns (string memory) {
+        return greeting;
+    }    
 
 }
