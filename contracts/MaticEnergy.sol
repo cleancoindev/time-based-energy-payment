@@ -1,10 +1,11 @@
 pragma solidity ^0.6.12;
 pragma experimental ABIEncoderV2;
 
+/// *** Using @hq/contracts v0.0.2 *** 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-import "@hq20/contracts-0.0.2/contracts/access/Whitelist.sol";
+import "./@hq20/contracts/access/Whitelist.sol";
 //import "@hq20/contracts/contracts/access/Whitelist.sol";
 
 /// Use original Ownable.sol
