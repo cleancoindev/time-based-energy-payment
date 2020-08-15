@@ -4,12 +4,13 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-import "@hq20/contracts/contracts/access/Whitelist.sol";
+import "@hq20/contracts-0.0.2/contracts/access/Whitelist.sol";
+//import "@hq20/contracts/contracts/access/Whitelist.sol";
 
-// Use original Ownable.sol
+/// Use original Ownable.sol
 import "./lib/OwnableOriginal.sol";
 
-// Storage
+/// Storage
 import "./storage/McStorage.sol";
 import "./storage/McEvents.sol";
 import "./storage/McConstants.sol";
