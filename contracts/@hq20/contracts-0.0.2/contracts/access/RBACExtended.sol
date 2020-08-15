@@ -1,4 +1,6 @@
-pragma solidity ^0.5.10;
+pragma solidity >=0.5.10 <0.7.0;
+//pragma solidity ^0.5.10;
+
 import "./RBAC.sol";
 
 

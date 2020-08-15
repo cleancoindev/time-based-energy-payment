@@ -1,5 +1,8 @@
-pragma solidity ^0.5.10;
-import "@openzeppelin/contracts/ownership/Ownable.sol";
+pragma solidity >=0.5.10 <0.7.0;
+//pragma solidity ^0.5.10;
+
+import "@openzeppelin/contracts/access/Ownable.sol";
+//import "@openzeppelin/contracts/ownership/Ownable.sol";
 
 
 /**
