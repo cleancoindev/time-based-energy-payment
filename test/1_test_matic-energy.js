@@ -11,9 +11,10 @@ const Matic = require('@maticnetwork/maticjs').default
 contract('MaticEnergy', accounts => {
 
     /***
-     * @notice - Setup
+     * @notice - Testing the basic user flow
+     *         - Ref: https://docs.matic.network/docs/develop/maticjs/getting-started 
      **/
-    describe("Setup", () => {
+    describe("Testing the basic user flow", () => {
         it('Setup contract for each test', async () => {
             const from = config.FROM_ADDRESS // from address
 
@@ -33,6 +34,21 @@ contract('MaticEnergy', accounts => {
             }
         });
 
+        it('Deposit (Ethereum → Matic)', async () => {
+            const token = config.GOERLI_ERC20 // ERC20 token address
+            const amount = '1000000000000000000' // amount in wei
+
+            async function execute() {
+                await matic.initialize()
+                matic.setWallet(config.PRIVATE_KEY)
+                
+                // Approve Deposit Manager contract to transfer tokens
+                await matic.approveERC20TokensForDeposit(token, amount, { from, gasPrice: '10000000000' })
+
+                // Deposit tokens
+                return matic.depositERC20ForUser(token, from, amount, { from, gasPrice: '10000000000' })
+            }
+        });        
 
     });
 
