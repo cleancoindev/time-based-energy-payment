@@ -48,7 +48,26 @@ contract('MaticEnergy', accounts => {
                 // Deposit tokens
                 return matic.depositERC20ForUser(token, from, amount, { from, gasPrice: '10000000000' })
             }
-        });        
+        });
+
+        it('Transfer (Matic ↔ Matic)', async () => {
+            const recipient = accounts[1]      /// 'recepient-address'
+            const token = config.MUMBAI_ERC20  /// test token address
+
+            // const token = config.MUMBAI_WETH
+            const amount = '1000000000000000000' // amount in wei
+
+            matic.initialize().then(() => {
+                matic.setWallet(config.PRIVATE_KEY)
+
+                // Transfer ERC20 Tokens
+                matic.transferERC20Tokens(token, recipient, amount, {
+                    from,
+                }).then((res) => {
+                    console.log("hash", res.transactionHash)
+                })
+            })
+        });
 
     });
 
