@@ -41,11 +41,15 @@ contract MaticEnergy is ERC20, Whitelist, McStorage, McEvents, McConstants {
      *      - The constructor also mints the requested amount of the underlying currency token to fund the network load. 
      *      - Also sets the base energy price, used for calculating prices.
      */
-    constructor (uint256 _initialSupply, uint128 _basePrice)
+    constructor ()
         public
         ERC20("Matic Energy Token", "MET")
         Whitelist()
     {
+
+        uint256 _initialSupply = 1e20;
+        uint128 _basePrice = 1e18;
+        
         _mint(address(this), _initialSupply);
         basePrice = _basePrice;
     }
