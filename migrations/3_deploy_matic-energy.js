@@ -6,11 +6,15 @@ var contractAddressList = require('./contractAddress/contractAddress.js');
 var tokenAddressList = require('./tokenAddress/tokenAddress.js');
 var walletAddressList = require('./walletAddress/walletAddress.js');
 
+const _initialSupply = 50000000000000000 
+const _basePrice = 30000000000000
+
+
 module.exports = async function(deployer, network, accounts) {
     // Initialize owner address if you want to transfer ownership of contract to some other address
     let ownerAddress = walletAddressList["WalletAddress1"];
 
-    await deployer.deploy(MaticEnergy)
+    await deployer.deploy(MaticEnergy, _initialSupply, _basePrice)
     //               .then(async function(maticEnergy) {
     //                   if(ownerAddress && ownerAddress!="") {
     //                       console.log(`=== Transfering ownership to address ${ownerAddress} ===`)
