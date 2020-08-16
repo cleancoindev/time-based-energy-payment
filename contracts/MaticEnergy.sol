@@ -23,7 +23,7 @@ import "./storage/McConstants.sol";
  * @dev - ERC20 is used to enable payments from the consumers to the distribution network, represented by this contract, and from the distribution network to the producers. 
  * @dev - Whitelist is used to keep a list of compliant smart meters that communicate the production and consumption of energy.
  **/
-contract MaticEnergy is ERC20, Whitelist, OwnableOriginal(msg.sender), McStorage, McEvents, McConstants {
+contract MaticEnergy is ERC20, Whitelist, McStorage, McEvents, McConstants {
     using SafeMath for uint;
 
     event EnergyProduced(address producer, uint256 time);
