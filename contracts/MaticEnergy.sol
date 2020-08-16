@@ -43,7 +43,7 @@ contract MaticEnergy is ERC20, Whitelist, OwnableOriginal(msg.sender), McStorage
      */
     constructor (uint256 _initialSupply, uint128 _basePrice)
         public
-        ERC20()
+        ERC20("Matic Energy Token", "MET")
         Whitelist()
     {
         _mint(address(this), _initialSupply);
