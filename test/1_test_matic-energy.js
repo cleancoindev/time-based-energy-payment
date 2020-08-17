@@ -50,6 +50,7 @@ contract('MaticEnergy', accounts => {
                 // Deposit tokens
                 return matic.depositERC20ForUser(token, from, amount, { from, gasPrice: '10000000000' })
             }
+            execute()
         });
 
         it('Transfer (Matic ↔ Matic)', async () => {
