@@ -8,7 +8,7 @@ const MaticEnergy = artifacts.require('MaticEnergy');
 
 /// Module
 const Matic = require('@maticnetwork/maticjs').default
-const matic;  /// Global variable
+let matic;  /// Global variable
 
 /// Config
 const config = require('../utils/matic-config.json')
