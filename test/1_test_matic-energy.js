@@ -1,14 +1,14 @@
 const Web3 = require('web3');
 const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8545'));
 
-const matic = require('@maticnetwork/maticjs');
+//const matic = require('@maticnetwork/maticjs');
 
 /// Artifact
 const MaticEnergy = artifacts.require('MaticEnergy');
 
 /// Module
 const Matic = require('@maticnetwork/maticjs').default
-//const config = require('../utils/matic-config.json')
+const config = require('../utils/matic-config.json')
 
 contract('MaticEnergy', accounts => {
 
@@ -56,19 +56,15 @@ contract('MaticEnergy', accounts => {
             const recipient = accounts[1]      /// 'recepient-address'
             const token = config.MUMBAI_ERC20  /// test token address
 
-            // const token = config.MUMBAI_WETH
+            /// const token = config.MUMBAI_WETH
             const amount = '1000000000000000000' // amount in wei
 
-            matic.initialize().then(() => {
-                matic.setWallet(config.PRIVATE_KEY)
+            await matic.initialize()
+            await matic.setWallet(config.PRIVATE_KEY)
 
-                // Transfer ERC20 Tokens
-                matic.transferERC20Tokens(token, recipient, amount, {
-                    from,
-                }).then((res) => {
-                    console.log("hash", res.transactionHash)
-                })
-            })
+            /// Transfer ERC20 Tokens
+            let res = await matic.transferERC20Tokens(token, recipient, amount, { from })
+            console.log("== hash ===", res.transactionHash);
         });
 
     });
