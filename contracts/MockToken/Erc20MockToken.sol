@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 contract Erc20MockToken is ERC20 {
     using SafeMath for uint;
 
-    constructor() ERC20("Erc20MockToken", "EMT", 18) public {
+    constructor() ERC20("Erc20MockToken", "EMT") public {
         uint initialSupply = 1e8.mul(1e18);  /// Initial Supply amount is 100M
         address initialTokenHolder = msg.sender;
         _mint(initialTokenHolder, initialSupply);
