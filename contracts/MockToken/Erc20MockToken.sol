@@ -2,6 +2,7 @@ pragma solidity ^0.6.12;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";  /// From @openzeppelin/contract v0.3.x
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 
 /***
@@ -9,6 +10,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";  /// From @openzeppelin/
  * @dev - Reference from @openzeppelin/contract v0.3.x https://docs.openzeppelin.com/contracts/3.x/erc20
  **/
 contract Erc20MockToken is ERC20 {
+    using SafeMath for uint;
 
     constructor() ERC20("Erc20MockToken", "EMT", 18) public {
         uint initialSupply = 1e8.mul(1e18);  /// Initial Supply amount is 100M
