@@ -57,9 +57,11 @@ contract('MaticEnergy', accounts => {
 
         it('Transfer (Matic ↔ Matic)', async () => {
             const recipient = accounts[1]      /// 'recepient-address'
-            const token = config.MUMBAI_ERC20  /// test token address
+            const token = config.GOERLI_ERC20  /// <--Need to have Goerli ETH in this wallet address
+            //const token = config.MUMBAI_WETH
+            console.log("== recipient ===", recipient);
+            console.log("== token ===", token);
 
-            /// const token = config.MUMBAI_WETH
             const amount = '1000000000000000000' // amount in wei
 
             /// Transfer ERC20 Tokens
