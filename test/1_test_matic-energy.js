@@ -1,12 +1,18 @@
 const Web3 = require('web3');
 const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8545'));
 
+//const matic = require('@maticnetwork/maticjs');
+
 /// Artifact
 const MaticEnergy = artifacts.require('MaticEnergy');
 
 /// Module
 const Matic = require('@maticnetwork/maticjs').default
-//const config = require('../utils/matic-config.json')
+let matic;  /// Global variable
+let fromAddress;
+
+/// Config
+const config = require('../utils/matic-config.json')
 
 contract('MaticEnergy', accounts => {
 
@@ -16,10 +22,10 @@ contract('MaticEnergy', accounts => {
      **/
     describe("Testing the basic user flow", () => {
         it('Setup contract for each test', async () => {
-            const from = config.FROM_ADDRESS // from address
+            fromAddress = config.FROM_ADDRESS // from address
 
-            // Create object of Matic
-            const matic = new Matic({
+            // Create object of Matic (assigned as a global variable)
+            matic = new Matic({
                 maticProvider: config.MATIC_PROVIDER,
                 parentProvider: config.PARENT_PROVIDER,
                 rootChain: config.ROOTCHAIN_ADDRESS,
@@ -32,41 +38,35 @@ contract('MaticEnergy', accounts => {
                 await matic.initialize()
                 matic.setWallet(config.PRIVATE_KEY)
             }
+            execute()
         });
 
         it('Deposit (Ethereum → Matic)', async () => {
             const token = config.GOERLI_ERC20 // ERC20 token address
             const amount = '1000000000000000000' // amount in wei
 
-            async function execute() {
-                await matic.initialize()
-                matic.setWallet(config.PRIVATE_KEY)
-                
+            async function execute() {               
                 // Approve Deposit Manager contract to transfer tokens
-                await matic.approveERC20TokensForDeposit(token, amount, { from, gasPrice: '10000000000' })
+                await matic.approveERC20TokensForDeposit(token, amount, { from: fromAddress, gasPrice: '10000000000' })
 
                 // Deposit tokens
-                return matic.depositERC20ForUser(token, from, amount, { from, gasPrice: '10000000000' })
+                return matic.depositERC20ForUser(token, fromAddress, amount, { from: fromAddress, gasPrice: '10000000000' })
             }
+            execute()
         });
 
         it('Transfer (Matic ↔ Matic)', async () => {
             const recipient = accounts[1]      /// 'recepient-address'
-            const token = config.MUMBAI_ERC20  /// test token address
+            const token = config.GOERLI_ERC20  /// <--Need to have Goerli ETH in this wallet address
+            //const token = config.MUMBAI_WETH
+            console.log("== recipient ===", recipient);
+            console.log("== token ===", token);
 
-            // const token = config.MUMBAI_WETH
             const amount = '1000000000000000000' // amount in wei
 
-            matic.initialize().then(() => {
-                matic.setWallet(config.PRIVATE_KEY)
-
-                // Transfer ERC20 Tokens
-                matic.transferERC20Tokens(token, recipient, amount, {
-                    from,
-                }).then((res) => {
-                    console.log("hash", res.transactionHash)
-                })
-            })
+            /// Transfer ERC20 Tokens
+            let res = await matic.transferERC20Tokens(token, recipient, amount, { from: fromAddress })
+            console.log("== hash ===", res.transactionHash);
         });
 
     });

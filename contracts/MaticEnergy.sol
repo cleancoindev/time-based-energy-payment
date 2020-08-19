@@ -23,7 +23,7 @@ import "./storage/McConstants.sol";
  * @dev - ERC20 is used to enable payments from the consumers to the distribution network, represented by this contract, and from the distribution network to the producers. 
  * @dev - Whitelist is used to keep a list of compliant smart meters that communicate the production and consumption of energy.
  **/
-contract MaticEnergy is ERC20, Whitelist, OwnableOriginal(msg.sender), McStorage, McEvents, McConstants {
+contract MaticEnergy is ERC20, Whitelist, McStorage, McEvents, McConstants {
     using SafeMath for uint;
 
     event EnergyProduced(address producer, uint256 time);
@@ -41,11 +41,15 @@ contract MaticEnergy is ERC20, Whitelist, OwnableOriginal(msg.sender), McStorage
      *      - The constructor also mints the requested amount of the underlying currency token to fund the network load. 
      *      - Also sets the base energy price, used for calculating prices.
      */
-    constructor (uint256 _initialSupply, uint128 _basePrice)
+    constructor ()
         public
-        ERC20()
+        ERC20("Matic Energy Token", "MET")
         Whitelist()
     {
+
+        uint256 _initialSupply = 1e20;
+        uint128 _basePrice = 1e18;
+        
         _mint(address(this), _initialSupply);
         basePrice = _basePrice;
     }
