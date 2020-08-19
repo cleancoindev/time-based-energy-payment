@@ -27,13 +27,13 @@ contract('MaticEnergy', accounts => {
         it('Create a instance of Erc20MockToken.sol', async () => {
             const abi = Erc20MockToken.abi;
             const _erc20MockToken = Erc20MockToken.address;  /// Local
-            erc20MockToken = await web3.eth.Contract(abi, _erc20MockToken);
-        }        
+            erc20MockToken = new web3.eth.Contract(abi, _erc20MockToken);
+        });        
 
         it('Check balance of accounts[0] who has initialSupply of Erc20MockToken.sol', async () => {
             let balance = await erc20MockToken.methods.balanceOf(accounts[0]).call();
             console.log("== balance ===", balance);
-        }
+        });
 
         it('Setup contract for each test', async () => {
             fromAddress = config.FROM_ADDRESS // from address
