@@ -7,6 +7,7 @@
   },
   "scripts": {
     "test:local": "truffle test ./test/* --network local",
+    "test:goerli": "truffle test ./test/* --network goerli",
     "test:rinkeby": "truffle test ./test/* --network rinkeby",
     "start-blank": "rm -rf client/src && cp -rf barebones/src client/",
     "client": "cd client && npm run start",
@@ -20,6 +21,7 @@
     "console:rinkeby": "truffle console --network rinkeby",
     "compile:rinkeby": "truffle compile --reset --network rinkeby",
     "migrate:rinkeby": "truffle migrate --reset --network rinkeby",
+    "migrate:goerli": "truffle migrate --reset --network goerli",
     "migrate:local": "truffle migrate --reset --network local"
   },
   "author": "masaun",

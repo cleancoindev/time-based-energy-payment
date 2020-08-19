@@ -21,19 +21,21 @@ contract('MaticEnergy', accounts => {
     /***
      * @notice - Testing the basic user flow
      *         - Ref: https://docs.matic.network/docs/develop/maticjs/getting-started 
+     *         - Fancet: https://faucet.matic.network/
      **/
     describe("Testing the basic user flow", () => {
 
-        it('Create a instance of Erc20MockToken.sol', async () => {
-            const abi = Erc20MockToken.abi;
-            const _erc20MockToken = Erc20MockToken.address;  /// Local
-            erc20MockToken = new web3.eth.Contract(abi, _erc20MockToken);
-        });        
+        // it('Create a instance of Erc20MockToken.sol', async () => {
+        //     const abi = Erc20MockToken.abi;
+        //     const _erc20MockToken = Erc20MockToken.address;  /// Local
+        //     erc20MockToken = new web3.eth.Contract(abi, _erc20MockToken);
+        // });        
 
-        it('Check balance of accounts[0] who has initialSupply of Erc20MockToken.sol', async () => {
-            let balance = await erc20MockToken.methods.balanceOf(accounts[0]).call();
-            console.log("== balance ===", balance);
-        });
+        // it('Check balance of accounts[0] who has initialSupply of Erc20MockToken.sol', async () => {
+        //     console.log("== accounts ===", accounts);
+        //     let balance = await erc20MockToken.methods.balanceOf(accounts[0]).call();
+        //     console.log("== balance ===", balance);
+        // });
 
         it('Setup contract for each test', async () => {
             fromAddress = config.FROM_ADDRESS // from address
@@ -56,9 +58,9 @@ contract('MaticEnergy', accounts => {
         });
 
         it('Deposit (Ethereum → Matic)', async () => {
-            const token = Erc20MockToken.address // ERC20 token address of Erc20MockToken.sol
-            //const token = config.GOERLI_ERC20  // ERC20 token address
-            const amount = '1000000000000000000' // amount in wei
+            //const token = Erc20MockToken.address // ERC20 token address of Erc20MockToken.sol
+            const token = config.GOERLI_ERC20      // ERC20 token address
+            const amount = '1000000000000000000'   // amount in wei
 
             async function execute() {               
                 // Approve Deposit Manager contract to transfer tokens
@@ -72,8 +74,8 @@ contract('MaticEnergy', accounts => {
 
         it('Transfer (Matic ↔ Matic)', async () => {
             const recipient = accounts[1]      /// 'recepient-address'
-            const token = Erc20MockToken.address // ERC20 token address of Erc20MockToken.sol
-            //const token = config.GOERLI_ERC20  /// <--Need to have Goerli ETH in this wallet address
+            //const token = Erc20MockToken.address // ERC20 token address of Erc20MockToken.sol
+            const token = config.GOERLI_ERC20  /// <--Need to have Goerli ETH in this wallet address
             //const token = config.MUMBAI_WETH
             console.log("== recipient ===", recipient);
             console.log("== token ===", token);
