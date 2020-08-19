@@ -73,9 +73,9 @@ contract('MaticEnergy', accounts => {
         });
 
         it('Transfer (Matic ↔ Matic)', async () => {
-            const recipient = accounts[1]      /// 'recepient-address'
-            //const token = Erc20MockToken.address // ERC20 token address of Erc20MockToken.sol
-            const token = config.GOERLI_ERC20  /// <--Need to have Goerli ETH in this wallet address
+            const recipient = "0x8Fc9d07b1B9542A71C4ba1702Cd230E160af6EB3"          /// 'recepient-address'
+            //const token = Erc20MockToken.address /// ERC20 token address of Erc20MockToken.sol
+            const token = config.MUMBAI_ERC20      /// test token address
             //const token = config.MUMBAI_WETH
             console.log("== recipient ===", recipient);
             console.log("== token ===", token);
