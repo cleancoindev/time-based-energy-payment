@@ -5,6 +5,7 @@ const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8545'
 
 /// Artifact
 const MaticEnergy = artifacts.require('MaticEnergy');
+const Erc20MockToken = require("../build/contracts/Erc20MockToken.json");
 
 /// Module
 const Matic = require('@maticnetwork/maticjs').default
@@ -42,7 +43,8 @@ contract('MaticEnergy', accounts => {
         });
 
         it('Deposit (Ethereum → Matic)', async () => {
-            const token = config.GOERLI_ERC20 // ERC20 token address
+            const token = Erc20MockToken.address // ERC20 token address of Erc20MockToken.sol
+            //const token = config.GOERLI_ERC20  // ERC20 token address
             const amount = '1000000000000000000' // amount in wei
 
             async function execute() {               
@@ -57,7 +59,8 @@ contract('MaticEnergy', accounts => {
 
         it('Transfer (Matic ↔ Matic)', async () => {
             const recipient = accounts[1]      /// 'recepient-address'
-            const token = config.GOERLI_ERC20  /// <--Need to have Goerli ETH in this wallet address
+            const token = Erc20MockToken.address // ERC20 token address of Erc20MockToken.sol
+            //const token = config.GOERLI_ERC20  /// <--Need to have Goerli ETH in this wallet address
             //const token = config.MUMBAI_WETH
             console.log("== recipient ===", recipient);
             console.log("== token ===", token);
