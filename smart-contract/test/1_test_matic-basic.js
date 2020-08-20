@@ -16,7 +16,7 @@ let fromAddress;
 /// Config
 const config = require('../utils/matic-config.json')
 
-contract('MaticEnergy', accounts => {
+contract('MaticBasic', accounts => {
 
     /***
      * @notice - Testing the basic user flow
