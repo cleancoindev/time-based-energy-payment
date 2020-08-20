@@ -14,17 +14,26 @@ let erc20MockToken;
 
 contract('MaticEnergy', accounts => {
     describe("Testing the basic user flow", () => {
-        it('Setup contract for each test', async () => {
-            maticEnergy = new web3.eth.Contract(MaticEnergy.abi, MaticEnergy.address);
+        before('Setup contract instances', async () => {
+            // Get the contract instance.
+            const deployedNetwork = null;
+            const networkId = await web3.eth.net.getId();
+            if (MaticEnergy.networks) {
+                deployedNetwork = MaticEnergy.networks[networkId.toString()];
+                if (deployedNetwork) {
+                    maticEnergy = new web3.eth.Contract(
+                        MaticEnergy.abi,
+                        deployedNetwork && deployedNetwork.address,
+                    );
+                    console.log('=== maticEnergy ===', maticEnergy);
+                }
+            }        
         });
 
-        it('Some function', async () => {
-            //const token = Erc20MockToken.address // ERC20 token address of Erc20MockToken.sol
-            // const token = config.GOERLI_ERC20      // ERC20 token address
-            // const amount = '1000000000000000000'   // amount in wei
-
-            // await matic.approveERC20TokensForDeposit(token, amount, { from: fromAddress, gasPrice: '10000000000' })
-
+        it('getProductionPrice', async () => {
+            const _time = 1597967062;  /// Thu, 20 Aug 2020 23:44:22 GMT
+            let res = await maticEnergy.methods.getProductionPrice(_time).call();
+            console.log('=== res ===', res);
         });
 
     });
