@@ -11,6 +11,9 @@ const Erc20MockToken = require("../build/contracts/Erc20MockToken.json");
 let maticEnergy;     
 let erc20MockToken; 
 
+/// Deployer Address (Owner Address) of MaticEnergy.sol => Ganache-CLI accounts[1]
+let ownerAddress;   
+
 
 contract('MaticEnergy', accounts => {
     describe("Testing the basic user flow", () => {
@@ -28,6 +31,13 @@ contract('MaticEnergy', accounts => {
                     console.log('=== maticEnergy ===', maticEnergy);
                 }
             }        
+        });
+
+        it('addMember() in Whitelist.sol', async () => {
+            ownerAddress = accounts[0];  /// Ganache-CLI accounts[1]
+            const _member = accounts[1];
+            let res = await maticEnergy.methods.addMember(_member).send({ from: ownerAddress });
+            console.log('=== res ===', res);
         });
 
         it('getProductionPrice', async () => {
