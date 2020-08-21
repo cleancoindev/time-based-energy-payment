@@ -12,17 +12,17 @@ var walletAddressList = require('./walletAddress/walletAddress.js');
 
 module.exports = async function(deployer, network, accounts) {
     // Initialize owner address if you want to transfer ownership of contract to some other address
-    let ownerAddress = walletAddressList["WalletAddress1"];
+    let ownerAddress = "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1";  /// Ganache-CLI accounts[1]
 
+    //await deployer.deploy(MaticEnergy)
     await deployer.deploy(MaticEnergy)
-    // await deployer.deploy(MaticEnergy, _initialSupply, _basePrice)
-    //               .then(async function(maticEnergy) {
-    //                   if(ownerAddress && ownerAddress!="") {
-    //                       console.log(`=== Transfering ownership to address ${ownerAddress} ===`)
-    //                       await maticEnergy.transferOwnership(ownerAddress);
-    //                   }
-    //               }
-    // );
+                  .then(async function(maticEnergy) {
+                      if(ownerAddress && ownerAddress!="") {
+                          console.log(`=== Transfering ownership to address ${ownerAddress} ===`)
+                          await maticEnergy.transferOwnership(ownerAddress);
+                      }
+                  }
+    );
 
     //@dev - Transfer 2.1 DAI from deployer's address to contract address in advance
     // const noLossFundraising = await NoLossFundraising.deployed();
