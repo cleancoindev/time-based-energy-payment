@@ -44,7 +44,7 @@ contract MaticEnergy is ERC20, Whitelist, McStorage, McEvents, McConstants {
     constructor ()
         public
         ERC20("Matic Energy Token", "MET")
-        Whitelist()
+        Whitelist(msg.sender)  /// Add initial member
     {
 
         uint256 _initialSupply = 1e20;  /// 100
