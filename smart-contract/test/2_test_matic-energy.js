@@ -17,7 +17,7 @@ let ownerAddress;
 
 contract('MaticEnergy', accounts => {
     describe("Testing the basic user flow", () => {
-        before('Setup contract instances', async () => {
+        before('Setup contract instances', async () => {            
             // Get the contract instance.
             const deployedNetwork = null;
             const networkId = await web3.eth.net.getId();

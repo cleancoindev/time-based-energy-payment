@@ -47,10 +47,10 @@ contract MaticEnergy is ERC20, Whitelist, McStorage, McEvents, McConstants {
         Whitelist()
     {
 
-        uint256 _initialSupply = 1e20;
-        uint128 _basePrice = 1e18;
+        uint256 _initialSupply = 1e20;  /// 100
+        uint128 _basePrice = 1e18;      /// 1
         
-        _mint(address(this), _initialSupply);
+        _mint(address(this), _initialSupply);   /// InitialSupply is sent into this contract
         basePrice = _basePrice;
     }
     
@@ -96,6 +96,9 @@ contract MaticEnergy is ERC20, Whitelist, McStorage, McEvents, McConstants {
         public
     {
         require(isMember(msg.sender), "Unknown meter.");
+
+        /// "this" below is ERC20 Token (Matic Enegy Token / MET)
+        /// "time" based pricing
         this.transfer(
             msg.sender,
             getProductionPrice(_time)
@@ -112,11 +115,15 @@ contract MaticEnergy is ERC20, Whitelist, McStorage, McEvents, McConstants {
         public
     {
         require(isMember(msg.sender), "Unknown meter.");
+
+        /// "this" below is ERC20 Token (Matic Enegy Token / MET)
+        /// "time" based pricing
         this.transferFrom(
             msg.sender,
             address(this),
             getConsumptionPrice(_time)
         );
+
         consumption[_time] = consumption[_time] + 1;
         emit EnergyConsumed(msg.sender, _time);
     }
