@@ -1,5 +1,5 @@
 var MaticEnergy = artifacts.require("MaticEnergy");
-var IERC20 = artifacts.require("IERC20");
+var MaticEnergyToken = artifacts.require("MaticEnergyToken");
 
 //@dev - Import from exported file
 var contractAddressList = require('./contractAddress/contractAddress.js');
@@ -9,13 +9,15 @@ var walletAddressList = require('./walletAddress/walletAddress.js');
 //const _initialSupply = 50000000000000000000
 //const _basePrice = 3000000000000000
 
+const _maticEnergyToken = MaticEnergyToken.address;
+
 
 module.exports = async function(deployer, network, accounts) {
     // Initialize owner address if you want to transfer ownership of contract to some other address
     let ownerAddress = "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1";  /// Ganache-CLI accounts[1]
 
     //await deployer.deploy(MaticEnergy)
-    await deployer.deploy(MaticEnergy)
+    await deployer.deploy(MaticEnergy, _maticEnergyToken)
                   .then(async function(maticEnergy) {
                       if(ownerAddress && ownerAddress!="") {
                           console.log(`=== Transfering ownership to address ${ownerAddress} ===`)

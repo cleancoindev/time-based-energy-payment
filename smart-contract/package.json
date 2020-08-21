@@ -21,6 +21,7 @@
     "console:rinkeby": "truffle console --network rinkeby",
     "compile:rinkeby": "truffle compile --reset --network rinkeby",
     "migrate:rinkeby": "truffle migrate --reset --network rinkeby",
+    "compile:goerli": "truffle compile --reset --network goerli",
     "migrate:goerli": "truffle migrate --reset --network goerli",
     "migrate:local": "truffle migrate --reset --network local"
   },
