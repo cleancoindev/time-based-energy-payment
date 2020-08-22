@@ -3,6 +3,8 @@ pragma experimental ABIEncoderV2;
 
 import "./@hq20/contracts/access/Whitelist.sol";
 
+import "@openzeppelin/contracts/math/SafeMath.sol";
+
 /// Storage
 import "./common/McStorage.sol";
 import "./common/McEvents.sol";
@@ -17,7 +19,10 @@ import "./common/McConstants.sol";
    - Consumers
  **/
 contract RegisterRole is Whitelist, McStorage, McEvents, McConstants {
+    using SafeMath for uint;
     
+    uint currentUserId;
+
     constructor ()
         public
         Whitelist(msg.sender)  /// Add initial member
@@ -25,7 +30,13 @@ contract RegisterRole is Whitelist, McStorage, McEvents, McConstants {
 
     }
 
-    function registerAsProducer() public returns (bool) {}
+    function registerAsProducer(address walletAddress) public returns (bool) {
+        uint newUserId = getNextUserId();
+
+        User storage user = users[newUserId];
+        user.role = Role.Producer;  /// enum
+        user.walletAddress = walletAddress;
+    }
 
     function registerAsDistributor() public returns (bool) {}
 
@@ -33,5 +44,9 @@ contract RegisterRole is Whitelist, McStorage, McEvents, McConstants {
 
     function registerAsConsumer() public returns (bool) {}
 
+    
+    function getNextUserId() view internal returns (uint nextUserId) {
+        return currentUserId.add(1);
+    }
     
 }

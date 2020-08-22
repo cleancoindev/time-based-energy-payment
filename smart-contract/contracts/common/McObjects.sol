@@ -3,7 +3,7 @@ pragma experimental ABIEncoderV2;
 
 contract McObjects {
     
-    enum Role { Producer, Distributor, Retailer, Consumer }
+    enum Role { Producer, Distributor, Retailer, Consumer }  /// Producer:0 ~ Consumer:3
 
     struct User {  /// Key: userId
         Role role;
