@@ -32,6 +32,7 @@ contract RegisterRole is Whitelist, McStorage, McEvents, McConstants {
 
     function registerAsProducer(address walletAddress) public returns (bool) {
         uint newUserId = getNextUserId();
+        currentUserId++;
 
         User storage user = users[newUserId];
         user.role = Role.Producer;  /// enum
