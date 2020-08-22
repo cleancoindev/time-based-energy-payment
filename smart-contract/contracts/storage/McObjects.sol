@@ -3,4 +3,5 @@ pragma experimental ABIEncoderV2;
 
 contract McObjects {
     
+    enum Role { Producer, Distributor, Retailer, Consumer }
 }
