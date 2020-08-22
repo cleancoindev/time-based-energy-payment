@@ -25,8 +25,13 @@ contract RegisterRole is Whitelist, McStorage, McEvents, McConstants {
 
     }
 
-   function registerAsProducer() returns(bool res) {
-        Role 1
-    }
+    function registerAsProducer() public returns (bool) {}
+
+    function registerAsDistributor() public returns (bool) {}
+
+    function registerAsRetailer() public returns (bool) {}
+
+    function registerAsConsumer() public returns (bool) {}
+
     
 }
