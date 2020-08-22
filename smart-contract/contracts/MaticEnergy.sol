@@ -103,6 +103,7 @@ contract MaticEnergy is Whitelist, McStorage, McEvents, McConstants {
 
         /// "this" below is ERC20 Token (Matic Enegy Token / MET)
         /// "time" based pricing
+        /// Transfer MET from this contract to user 
         maticEnergyToken.transfer(
             msg.sender,
             getProductionPrice(_time)
@@ -122,6 +123,7 @@ contract MaticEnergy is Whitelist, McStorage, McEvents, McConstants {
 
         /// "this" below is ERC20 Token (Matic Enegy Token / MET)
         /// "time" based pricing
+        /// Transfer MET from user to this contract 
         maticEnergyToken.transferFrom(
             msg.sender,
             address(this),

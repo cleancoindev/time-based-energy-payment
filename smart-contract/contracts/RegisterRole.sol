@@ -46,7 +46,7 @@ contract RegisterRole is Whitelist, McStorage, McEvents, McConstants {
     function registerAsConsumer() public returns (bool) {}
 
     
-    function getNextUserId() view internal returns (uint nextUserId) {
+    function getNextUserId() internal view returns (uint nextUserId) {
         return currentUserId.add(1);
     }
     
