@@ -4,9 +4,9 @@ pragma experimental ABIEncoderV2;
 import "./@hq20/contracts/access/Whitelist.sol";
 
 /// Storage
-import "./storage/McStorage.sol";
-import "./storage/McEvents.sol";
-import "./storage/McConstants.sol";
+import "./common/McStorage.sol";
+import "./common/McEvents.sol";
+import "./common/McConstants.sol";
 
 
 /***
@@ -25,5 +25,8 @@ contract RegisterRole is Whitelist, McStorage, McEvents, McConstants {
 
     }
 
+   function registerAsProducer() returns(bool res) {
+        Role 1
+    }
     
 }

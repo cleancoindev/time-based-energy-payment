@@ -12,12 +12,12 @@ import "./@hq20/contracts/access/Whitelist.sol";
 import "./lib/OwnableOriginal.sol";
 
 /// Storage
-import "./storage/McStorage.sol";
-import "./storage/McEvents.sol";
-import "./storage/McConstants.sol";
+import "./common/McStorage.sol";
+import "./common/McEvents.sol";
+import "./common/McConstants.sol";
 
 /// ERC20 token for paying for energy production and consumption
-import "./MockToken/MaticEnergyToken.sol";
+import "./mockToken/MaticEnergyToken.sol";
 
 
 /***
