@@ -19,6 +19,9 @@ import "./common/McConstants.sol";
 /// ERC20 token for paying for energy production and consumption
 import "./mockToken/MaticEnergyToken.sol";
 
+///
+import "./TimeBasedPaymentFormula.sol";
+
 
 /***
  * @notice - This contract is that ...
@@ -26,7 +29,7 @@ import "./mockToken/MaticEnergyToken.sol";
  * @dev - ERC20 is used to enable payments from the consumers to the distribution network, represented by this contract, and from the distribution network to the producers. 
  * @dev - Whitelist is used to keep a list of compliant smart meters that communicate the production and consumption of energy.
  **/
-contract MaticEnergy is Whitelist, McStorage, McEvents, McConstants {
+contract MaticEnergy is TimeBasedPaymentFormula, Whitelist, McStorage, McEvents, McConstants {
     using SafeMath for uint;
 
     MaticEnergyToken public maticEnergyToken;
@@ -48,6 +51,7 @@ contract MaticEnergy is Whitelist, McStorage, McEvents, McConstants {
      */
     constructor (address _maticEnergyToken)
         public
+        TimeBasedPaymentFormula()
         Whitelist(msg.sender)  /// Add initial member
     {
         maticEnergyToken = MaticEnergyToken(_maticEnergyToken);

@@ -13,7 +13,7 @@ import "./common/McConstants.sol";
 /***
  * This contract is that the formula of time based payment
  **/
-contract TimeBasedPaymentFormula is Whitelist, McStorage, McEvents, McConstants {
+contract TimeBasedPaymentFormula {
     using SafeMath for uint;
     
     uint currentEnergyPrice;
