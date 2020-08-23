@@ -53,7 +53,7 @@ contract MaticEnergy is Whitelist, McStorage, McEvents, McConstants {
         maticEnergyToken = MaticEnergyToken(_maticEnergyToken);
 
         //uint256 _initialSupply = 1e20;  /// 100 MET
-        uint128 _basePrice = 1e18;        ///   1 MET
+        uint128 _basePrice = 1e18;        ///   1 MET (Current energy price = MET/kw)
 
         basePrice = _basePrice;
     }
