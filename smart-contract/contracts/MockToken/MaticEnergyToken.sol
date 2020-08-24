@@ -21,9 +21,5 @@ contract MaticEnergyToken is ERC20 {
         address initialTokenHolder = msg.sender;
         _mint(initialTokenHolder, initialSupply);
     }
-    
-    function mintTo(address to, uint mintAmount) public returns (bool) {
-        _mint(to, mintAmount);
-    }
 
 }

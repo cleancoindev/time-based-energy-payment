@@ -29,7 +29,7 @@ import "./TimeBasedPaymentFormula.sol";
  * @dev - ERC20 is used to enable payments from the consumers to the distribution network, represented by this contract, and from the distribution network to the producers. 
  * @dev - Whitelist is used to keep a list of compliant smart meters that communicate the production and consumption of energy.
  **/
-contract MaticEnergy is TimeBasedPaymentFormula, Whitelist, McStorage, McEvents, McConstants {
+contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStorage, McEvents, McConstants {
     using SafeMath for uint;
 
     MaticEnergyToken public maticEnergyToken;
