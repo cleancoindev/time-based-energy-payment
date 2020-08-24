@@ -49,10 +49,10 @@ contract MaticEnergy is TimeBasedPaymentFormula, Whitelist, McStorage, McEvents,
      *      - The constructor also mints the requested amount of the underlying currency token to fund the network load. 
      *      - Also sets the base energy price, used for calculating prices.
      */
-    constructor (address _maticEnergyToken)
+    constructor (address _maticEnergyToken, address initialMember)
         public
         TimeBasedPaymentFormula()
-        Whitelist(msg.sender)  /// Add initial member
+        Whitelist(initialMember)  /// Add initial member
     {
         maticEnergyToken = MaticEnergyToken(_maticEnergyToken);
 
