@@ -61,6 +61,24 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
 
         basePrice = _basePrice;
     }
+
+
+    function judgementMonthlyProfitAndLoss() returns(bool res) internal {
+        /// Judgement whether user pay consumed amount or get profit or both of no.
+        if (production[_time] > consume[_time]) {
+            production[_time].sub(consume[_time]);          /// In case of this, user get profit
+        } else if (production[_time] < consume[_time]) {
+            consume[_time].sub(production[_time]);          /// In case of this, user pay for substracted amount
+        } else if (production[_time] == consume[_time]) {
+            /// Nothing                                     /// In case of this, user is no pay for any amount and no get profit
+        }
+    }
+    
+
+
+
+
+    /////////---------------------- Reference methods below ----------------------/////////
     
     /**
      * @dev The production price for each time slot.
