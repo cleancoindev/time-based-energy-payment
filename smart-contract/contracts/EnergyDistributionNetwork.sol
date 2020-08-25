@@ -68,11 +68,18 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
         uint targetTime;
         if (production[_time] > consume[_time]) {
             targetTime = production[_time].sub(consume[_time]);   /// In case of this, user get profit
+            uint paymentAmount = purchaseAmount(targetTime);
+            maticEnergyToken.transfer(msg.sender, paymentAmount);                     /// From contract (distribution network) to user (producer)
         } else if (production[_time] < consume[_time]) {
             targetTime = consume[_time].sub(production[_time]);   /// In case of this, user pay for substracted amount
+            uint paymentAmount = purchaseAmount(targetTime);
+            maticEnergyToken.transferFrom(msg.sender, address(this), paymentAmount);  /// From user (consumer) to contract (distribution network)
         } else if (production[_time] == consume[_time]) {
             targetTime = 0;                                       /// In case of this, user is no pay for any amount and no get profit
+            uint paymentAmount = purchaseAmount(targetTime);      /// Result: 0
         }
+
+
     }
     
 
