@@ -62,11 +62,17 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
         basePrice = _basePrice;
     }
 
+    /***
+     * [Next]: Need to add checking smart-meter for getting each time
+     **/
+    function checkSmartMeter(address prosumer) returns (uint productionTime, uint consumeTime) {
+        /// [In progress]
+    }
 
     /***
      * @notice - This method is executed for checking prosumer's smart-meter every month.
      **/
-    function monthlyCheck(address prosumer) public returns (bool res) {
+    function monthlyCheck(address prosumer) public returns (bool) {
         /// Call the most recent datetime when it was checked before
         uint lastCheckedDatetime = _lastCheckedDatetime[prosumer];
 
@@ -95,6 +101,8 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
             targetTime = 0;                                       /// In case of this, user is no pay for any amount and no get profit
             uint paymentAmount = purchaseAmount(targetTime);      /// Result: 0
         }
+
+        /// [Next]: Need to add checking smart-meter for getting each time
     }
     
 
