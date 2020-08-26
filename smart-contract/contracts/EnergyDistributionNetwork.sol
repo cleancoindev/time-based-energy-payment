@@ -19,7 +19,7 @@ import "./common/McConstants.sol";
 /// ERC20 token for paying for energy production and consumption
 import "./mockToken/MaticEnergyToken.sol";
 
-///
+/// Time based payment formula
 import "./TimeBasedPaymentFormula.sol";
 
 
@@ -63,8 +63,25 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
     }
 
 
-    function judgementMonthlyProfitAndLoss() returns(bool res) internal {
-        /// Judgement whether user pay consumed amount or get profit or both of no.
+    /***
+     * @notice - This method is executed for checking prosumer's smart-meter every month.
+     **/
+    function monthlyCheck(address prosumer) public returns (bool res) {
+        /// Call the most recent datetime when it was checked before
+        uint lastCheckedDatetime = _lastCheckedDatetime[prosumer];
+
+        /// If now is passed more than 1 month compare to last checked datetime, it will be checked payment amount as a amount of this month
+        uint oneMonth = 4 weeks;
+        uint checkingTime = lastCheckedDatetime.add(oneMonth);
+        if (lastCheckedDatetime < now) {
+            judgeProfitAndLoss();
+        }
+    }
+
+    /***
+     * @notice - Judgement whether user pay consumed amount or get profit or both of no.
+     **/
+    function judgeProfitAndLoss() public returns (bool) {
         uint targetTime;
         if (production[_time] > consume[_time]) {
             targetTime = production[_time].sub(consume[_time]);   /// In case of this, user get profit
@@ -78,10 +95,12 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
             targetTime = 0;                                       /// In case of this, user is no pay for any amount and no get profit
             uint paymentAmount = purchaseAmount(targetTime);      /// Result: 0
         }
-
-
     }
     
+
+    
+
+
 
 
 

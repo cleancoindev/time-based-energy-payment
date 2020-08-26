@@ -8,5 +8,6 @@ contract McStorage is McObjects {
 
     mapping (uint => User) users;  /// Key: userId
     
+    mapping (address => uint) _lastCheckedDatetime;  /// Key: prosumer's address
 
 }
