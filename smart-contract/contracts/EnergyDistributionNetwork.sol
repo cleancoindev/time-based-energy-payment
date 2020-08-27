@@ -63,16 +63,29 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
     }
 
 
-    
 
+    /***
+     * Record each time and quantity into each smart-meter
+     **/
+    function recordSmartMeter(address prosumer, uint producedTime, uint producedQuantity, uint consumedTime, uint consumedQuantity) returns (bool) {
+        /// [In progress]
+        SmartMeterForProduction storage smartMeterForProduction = smartMeterForProductions[prosumer]; 
+        smartMeterForProduction.producedTime = producedTime;
+        smartMeterForProduction.producedQuantity = producedQuantity;
+
+        /// [In progress]
+        SmartMeterForConsumption storage smartMeterForConsumption = smartMeterForConsumptions[prosumer]; 
+        smartMeterForConsumption.consumedTime = consumedTime;
+        smartMeterForConsumption.consumedQuantity = consumedQuantity;
+    }
 
     /***
      * Check and record smart-meter for getting each time
      **/
     function getSmartMeter(address prosumer) returns (uint productionTime, uint consumeTime) {
         /// [In progress]
-        SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[producer]; 
-        SmartMeterForConsumption memory smartMeterForConsumption = smartMeterForConsumptions[producer]; 
+        SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[prosumer]; 
+        SmartMeterForConsumption memory smartMeterForConsumption = smartMeterForConsumptions[prosumer]; 
     }
 
     /***
@@ -93,7 +106,7 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
     /***
      * @notice - Judgement whether user pay consumed amount or get profit or both of no.
      **/
-    function judgeProfitAndLoss() public returns (bool) {
+    function judgeProfitAndLoss(uint _time) public returns (bool) {
         uint targetTime;
         if (production[_time] > consume[_time]) {
             targetTime = production[_time].sub(consume[_time]);   /// In case of this, user get profit
