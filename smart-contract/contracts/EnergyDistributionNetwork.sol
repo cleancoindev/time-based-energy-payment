@@ -62,11 +62,17 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
         basePrice = _basePrice;
     }
 
+
+    
+
+
     /***
-     * [Next]: Need to add checking smart-meter for getting each time
+     * Check and record smart-meter for getting each time
      **/
-    function checkSmartMeter(address prosumer) returns (uint productionTime, uint consumeTime) {
+    function getSmartMeter(address prosumer) returns (uint productionTime, uint consumeTime) {
         /// [In progress]
+        SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[producer]; 
+        SmartMeterForConsumption memory smartMeterForConsumption = smartMeterForConsumptions[producer]; 
     }
 
     /***

@@ -10,4 +10,15 @@ contract McObjects {
         address walletAddress;
     }
     
+    struct SmartMeterForProduction {   /// Key: address of producer
+        uint producedQuantity;   /// kw/h
+        uint producedTime;       /// second
+    }
+
+    struct SmartMeterForConsumption {   /// Key: address of consumer
+        uint consumptionQuantity;  /// kw/h
+        uint consumptionTime;      /// second
+    }    
+    
+
 }

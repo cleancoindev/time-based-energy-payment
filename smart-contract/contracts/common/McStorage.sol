@@ -10,4 +10,9 @@ contract McStorage is McObjects {
     
     mapping (address => uint) _lastCheckedDatetime;  /// Key: prosumer's address
 
+    /// Smart Meter
+    mapping (address => SmartMeterForProduction) smartMeterForProductions;    /// Key: address of producer
+    mapping (address => SmartMeterForConsumption) smartMeterForConsumptions;  /// Key: address of consumer
+    
+
 }
