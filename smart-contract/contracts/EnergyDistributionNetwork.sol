@@ -65,17 +65,18 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
 
 
     /***
-     * Record each time and quantity into each smart-meter
+     * @notice - Record quantity during time (every month. 1st-30th) from each smart-meter
+     *         - Produced time and consumed time are same.
      **/
-    function recordSmartMeter(address prosumer, uint producedTime, uint producedQuantity, uint consumedTime, uint consumedQuantity) returns (bool) {
-        /// [In progress]
+    function recordSmartMeter(address prosumer, uint time, uint producedQuantity, uint consumedQuantity) returns (bool) {
+        /// Record quantity of production during time from smart-meter
         SmartMeterForProduction storage smartMeterForProduction = smartMeterForProductions[prosumer]; 
-        smartMeterForProduction.producedTime = producedTime;
+        smartMeterForProduction.producedTime = time;
         smartMeterForProduction.producedQuantity = producedQuantity;
 
-        /// [In progress]
+        /// Record quantity of consumption during time from smart-meter
         SmartMeterForConsumption storage smartMeterForConsumption = smartMeterForConsumptions[prosumer]; 
-        smartMeterForConsumption.consumedTime = consumedTime;
+        smartMeterForConsumption.consumedTime = time;
         smartMeterForConsumption.consumedQuantity = consumedQuantity;
     }
 
@@ -104,7 +105,7 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
     }
 
     /***
-     * @notice - Judgement whether user pay consumed amount or get profit or both of no.
+     * @notice - Judge whether user pay consumed amount or get profit or both of no.
      **/
     function judgeProfitAndLoss(uint _time) public returns (bool) {
         uint targetTime;
