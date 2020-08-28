@@ -2,6 +2,14 @@
 
 ***
 ## 【Introduction of Matic Energy ⚡️】
+- How it works ?
+  - Payment: using the Matic Network / ERC20 token
+  - Smart contract: using the solidity/truffle.
+
+
+<br>
+
+
 - Stack
   - Solidity-v0.6.12
   - @openzeppelin/contracts-v3.1.0 

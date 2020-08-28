@@ -62,8 +62,6 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
         basePrice = _basePrice;
     }
 
-
-
     /***
      * @notice - Record quantity during time (every month. 1st-30th) from each smart-meter
      *         - Produced time and consumed time are same.
@@ -83,10 +81,13 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
     /***
      * Check and record smart-meter for getting each time
      **/
-    function getSmartMeter(address prosumer) returns (uint productionTime, uint consumeTime) {
-        /// [In progress]
-        SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[prosumer]; 
+    function getSmartMeter(address prosumer) returns (uint producedQuantity, uint consumedQuantity) {
+        SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[prosumer];
+        uint producedQuantity = smartMeterForProduction.producedQuantity;
+
         SmartMeterForConsumption memory smartMeterForConsumption = smartMeterForConsumptions[prosumer]; 
+        uint consumedQuantity = smartMeterForConsumption.consumedQuantity;
+        return (producedQuantity, consumedQuantity);
     }
 
     /***
