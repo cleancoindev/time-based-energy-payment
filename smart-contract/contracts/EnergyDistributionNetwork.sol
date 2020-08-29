@@ -8,8 +8,10 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./@hq20/contracts/access/Whitelist.sol";
 //import "@hq20/contracts/contracts/access/Whitelist.sol";
 
-/// Use original Ownable.sol
+/// Library
 import "./lib/OwnableOriginal.sol";
+//import "./lib/BokkyPooBahsDateTimeLibrary/contracts/BokkyPooBahsDateTimeContract.sol";
+import "./lib/BokkyPooBahsDateTimeLibrary/contracts/BokkyPooBahsDateTimeLibrary.sol";
 
 /// Storage
 import "./common/McStorage.sol";
@@ -62,6 +64,17 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
         basePrice = _basePrice;
     }
 
+
+    /***
+     * @notice - Calculate time (unit is "second") of the specified month
+     **/    
+    function calculateTimeForSpecifiedMonth(uint year, uint month) public view returns (uint calculatedTime) {
+        uint startDayOfMonth = 1;
+        uint endDayOfMonth = 30;   /// Tentative
+        uint timestampForStartingDayOfMonth = BokkyPooBahsDateTimeLibrary.timestampFromDate(year, month, startDayOfMonth);
+        uint timestampForEndingDayOfMonth = BokkyPooBahsDateTimeLibrary.timestampFromDate(year, month, endDayOfMonth);
+    }
+
     /***
      * @notice - Record quantity during time (every month. 1st-30th) from each smart-meter
      *         - Produced time and consumed time are same.
@@ -97,10 +110,10 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
         /// Call the most recent datetime when it was checked before
         uint lastCheckedDatetime = _lastCheckedDatetime[prosumer];
 
-        /// If now is passed more than 1 month compare to last checked datetime, it will be checked payment amount as a amount of this month
+        /// If now is passed more than 1 month compare to last checked datetime, it will be checked payment amount as a amount of the most recent month
         uint timeOfThisMonth = timePerMonth;
-        uint checkingTime = lastCheckedDatetime.add(timeOfThisMonth);
-        if (lastCheckedDatetime < now) {
+        uint checkingTimeForMostRecentMonth = lastCheckedDatetime.add(timeOfThisMonth);
+        if (checkingTimeForMostRecentMonth < now) {
             judgeProfitAndLoss(timeOfThisMonth);
         }
     }

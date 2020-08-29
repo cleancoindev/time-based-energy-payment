@@ -25,17 +25,16 @@
 ***
 
 ## 【Setup】
-### Setup wallet by using Metamask
-1. Add MetaMask to browser (Chrome or FireFox or Opera or Brave)    
-https://metamask.io/  
-
-
-2. Adjust appropriate newwork below 
+### Compile
 ```
-Kovan Test Network
+cd smart-contract
+
+ganache-cli -d
+
+npm run compile: local
 ```
 
-&nbsp;
+
 
 
 ### Setup backend
