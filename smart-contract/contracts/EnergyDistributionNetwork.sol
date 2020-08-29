@@ -66,22 +66,22 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
      * @notice - Record quantity during time (every month. 1st-30th) from each smart-meter
      *         - Produced time and consumed time are same.
      **/
-    function recordSmartMeter(address prosumer, uint time, uint producedQuantity, uint consumedQuantity) returns (bool) {
+    function recordSmartMeter(address prosumer, uint timePerMonth, uint producedQuantity, uint consumedQuantity) returns (bool) {
         /// Record quantity of production during time from smart-meter
         SmartMeterForProduction storage smartMeterForProduction = smartMeterForProductions[prosumer]; 
-        smartMeterForProduction.producedTime = time;
+        smartMeterForProduction.producedTime = timePerMonth;
         smartMeterForProduction.producedQuantity = producedQuantity;
 
         /// Record quantity of consumption during time from smart-meter
         SmartMeterForConsumption storage smartMeterForConsumption = smartMeterForConsumptions[prosumer]; 
-        smartMeterForConsumption.consumedTime = time;
+        smartMeterForConsumption.consumedTime = timePerMonth;
         smartMeterForConsumption.consumedQuantity = consumedQuantity;
     }
 
     /***
      * Check and record smart-meter for getting each time
      **/
-    function getSmartMeter(address prosumer) returns (uint producedQuantity, uint consumedQuantity) {
+    function getSmartMeter(address prosumer, uint timePerMonth) returns (uint producedQuantity, uint consumedQuantity) {
         SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[prosumer];
         uint producedQuantity = smartMeterForProduction.producedQuantity;
 
@@ -93,37 +93,43 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
     /***
      * @notice - This method is executed for checking prosumer's smart-meter every month.
      **/
-    function monthlyCheck(address prosumer) public returns (bool) {
+    function monthlyCheck(address prosumer, uint timePerMonth) public returns (bool) {
         /// Call the most recent datetime when it was checked before
         uint lastCheckedDatetime = _lastCheckedDatetime[prosumer];
 
         /// If now is passed more than 1 month compare to last checked datetime, it will be checked payment amount as a amount of this month
-        uint oneMonth = 4 weeks;
-        uint checkingTime = lastCheckedDatetime.add(oneMonth);
+        uint timeOfThisMonth = timePerMonth;
+        uint checkingTime = lastCheckedDatetime.add(timeOfThisMonth);
         if (lastCheckedDatetime < now) {
-            judgeProfitAndLoss();
+            judgeProfitAndLoss(timeOfThisMonth);
         }
     }
 
     /***
      * @notice - Judge whether user pay consumed amount or get profit or both of no.
      **/
-    function judgeProfitAndLoss(uint _time) public returns (bool) {
-        uint targetTime;
-        if (production[_time] > consume[_time]) {
-            targetTime = production[_time].sub(consume[_time]);   /// In case of this, user get profit
-            uint paymentAmount = purchaseAmount(targetTime);
-            maticEnergyToken.transfer(msg.sender, paymentAmount);                     /// From contract (distribution network) to user (producer)
-        } else if (production[_time] < consume[_time]) {
-            targetTime = consume[_time].sub(production[_time]);   /// In case of this, user pay for substracted amount
-            uint paymentAmount = purchaseAmount(targetTime);
-            maticEnergyToken.transferFrom(msg.sender, address(this), paymentAmount);  /// From user (consumer) to contract (distribution network)
-        } else if (production[_time] == consume[_time]) {
-            targetTime = 0;                                       /// In case of this, user is no pay for any amount and no get profit
-            uint paymentAmount = purchaseAmount(targetTime);      /// Result: 0
-        }
+    function judgeProfitOrLoss(address prosumer, uint timeOfThisMonth) public returns (bool) {
+        SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[prosumer];
+        uint producedQuantity = smartMeterForProduction.producedQuantity;
 
-        /// [Next]: Need to add checking smart-meter for getting each time
+        SmartMeterForConsumption memory smartMeterForConsumption = smartMeterForConsumptions[prosumer]; 
+        uint consumedQuantity = smartMeterForConsumption.consumedQuantity;
+
+        uint targetQuantity;
+        if (producedQuantity > consumedQuantity) {
+            targetQuantity = producedQuantity.sub(consumedQuantity);   /// In case of this, user get profit
+            uint paymentAmount = purchaseAmount(targetQuantity);
+            /// Distribution from contract (distribution network) to user (producer)
+            maticEnergyToken.transfer(msg.sender, paymentAmount);
+        } else if (producedQuantity < consumedQuantity) {
+            targetQuantity = consumedQuantity.sub(producedQuantity);   /// In case of this, user pay for substracted amount
+            uint paymentAmount = purchaseAmount(targetQuantity);
+            /// Distribution from user (consumer) to contract (distribution network)
+            maticEnergyToken.transferFrom(msg.sender, address(this), paymentAmount);
+        } else if (producedQuantity == consumedQuantity) {
+            targetQuantity = 0;                                       /// In case of this, user is no pay for any amount and no get profit
+            uint paymentAmount = 0;      /// Result: 0
+        }
     }
     
 
