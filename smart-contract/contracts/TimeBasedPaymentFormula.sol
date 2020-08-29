@@ -26,20 +26,28 @@ contract TimeBasedPaymentFormula {
     /***
      * @notice - In the future, the energy price is called via oracle.
      *         - Now, the energy price is defined as a constant
+     *         - Unit: $/kw
      **/
     function getEnergyPrice() public view returns (uint currentEnergyPrice) {
-        return currentEnergyPrice;   /// It is already multiplied decimals
+        return currentEnergyPrice;   /// $/kw (It is already multiplied decimals)
     }
-
 
     /***
      * @notice - Calculation of the time based purchase amount which consumer will pay.
      * @param time - time is second       
      **/    
     function purchaseAmount(uint time) public view returns (uint _purchaseAmount) {
-        uint energyPrice = getEnergyPrice();
-        return energyPrice.mul(time);  /// The purchaseAmount is equal to MET/kw per second * total consumed time (second)
+        uint energyPrice = getEnergyPrice();  /// $/kw
+        return energyPrice.mul(time);         /// The purchaseAmount is equal to MET/kw per second * total consumed time (second)
     }
     
+    /***
+     * @notice - Calculation of the energy quantity (kw) based distribution amount.
+     * @param quantity - the energy quantity (kw)    
+     **/       
+    function distributionAmount(uint quantity) public view returns (uint _distributionAmount) {
+        uint energyPrice = getEnergyPrice();  /// $/kw
+        return energyPrice.mul(quantity);     /// $/kw * kw
+    }
     
 }
