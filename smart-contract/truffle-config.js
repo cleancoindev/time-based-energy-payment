@@ -27,6 +27,14 @@ module.exports = {
       skipDryRun: true,     // Skip dry run before migrations? (default: false for public nets)
       //from: process.env.DEPLOYER_ADDRESS
     },
+    goerli: {
+      provider: () => new HDWalletProvider(mnemonic, "https://goerli.infura.io/v3/" + process.env.INFURA_KEY),
+      network_id: 5,
+      gas: 7500000,
+      gasPrice: 5000000000, // 5 gwei,
+      skipDryRun: true,     // Skip dry run before migrations? (default: false for public nets)
+      //from: process.env.DEPLOYER_ADDRESS
+    },
     // main ethereum network(mainnet)
     live: {
       provider: () => new HDWalletProvider(mnemonic, "https://mainnet.infura.io/v3/" + process.env.INFURA_KEY),

@@ -19,7 +19,9 @@ contract Whitelist is Ownable {
     /**
      * @dev The contract constructor.
      */
-    constructor() public Ownable() {
+    constructor(address _member) public Ownable() {
+        /// Add initial member;
+        addMember(_member);
     }
 
     /**
