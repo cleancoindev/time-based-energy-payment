@@ -148,7 +148,7 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
         SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[prosumer][year][month];
         uint producedQuantity = smartMeterForProduction.producedQuantity;
 
-        SmartMeterForConsumption memory smartMeterForConsumption = smartMeterForConsumptions[prosumer];[year][month];
+        SmartMeterForConsumption memory smartMeterForConsumption = smartMeterForConsumptions[prosumer][year][month];
         uint consumedQuantity = smartMeterForConsumption.consumedQuantity;
 
         uint targetQuantity;
