@@ -132,10 +132,11 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
      * @notice - Distrubution is executed every month.
      **/
     function monthlyDistribution(address prosumer, uint year, uint month) public returns (bool) {
-        /// [Next]: Calculate timestamp of target month by using BokkyPooBahsDateTimeLibrary.sol
-        uint timestampOfTargetMonth;
+        /// Calculate timestamp of the first day of next month by using BokkyPooBahsDateTimeLibrary.sol
+        uint nextMonth = month.add(1);
+        uint timestampOfFirstDayOfNextMonth = BokkyPooBahsDateTimeLibrary.timestampFromDate(year, nextMonth, 1);
 
-        if (timestampOfTargetMonth < now) {
+        if (timestampOfFirstDayOfNextMonth < now) {
             judgeProfitAndLoss(prosumer, year, month);
         }
     }

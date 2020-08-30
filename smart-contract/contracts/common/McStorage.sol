@@ -11,8 +11,8 @@ contract McStorage is McObjects {
     mapping (address => uint) _lastCheckedDatetime;  /// Key: prosumer's address
 
     /// Smart Meter
-    mapping (address => mapping (uint => mapping (uint => SmartMeterForProduction))) smartMeterForProductions;    /// Key: address of producer, year, month
-    mapping (address => mapping (uint => mapping (uint => SmartMeterForConsumption))) smartMeterForConsumptions;  /// Key: address of consumer, year, month
+    mapping (address => mapping (uint => mapping (uint => SmartMeterForProduction))) smartMeterForProductions;    /// Key: address of producer -> year -> month
+    mapping (address => mapping (uint => mapping (uint => SmartMeterForConsumption))) smartMeterForConsumptions;  /// Key: address of consumer -> year -> month
     
 
 }
