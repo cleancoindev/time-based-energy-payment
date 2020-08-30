@@ -126,7 +126,7 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
     /***
      * @notice - This method is executed for checking prosumer's smart-meter every month.
      **/
-    function monthlyCheck(address prosumer, uint timePerMonth) public returns (bool) {
+    function monthlyDistribution(address prosumer, uint timePerMonth) public returns (bool) {
         /// Call the most recent datetime when it was checked before
         uint lastCheckedDatetime = _lastCheckedDatetime[prosumer];
 
