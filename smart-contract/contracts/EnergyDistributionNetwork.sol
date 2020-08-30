@@ -99,7 +99,7 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
         uint producedQuantity;
         uint consumedTime;
         uint consumedQuantity;
-        producedTime, producedQuantity, consumedTime, consumedQuantity = sampleSmartMeter(prosumer, year, month);
+        (producedTime, producedQuantity, consumedTime, consumedQuantity) = sampleSmartMeter(prosumer, year, month);
 
         /// Record quantity of production during time from smart-meter
         SmartMeterForProduction storage smartMeterForProduction = smartMeterForProductions[prosumer][year][month];
@@ -137,7 +137,7 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
         uint timestampOfFirstDayOfNextMonth = BokkyPooBahsDateTimeLibrary.timestampFromDate(year, nextMonth, 1);
 
         if (timestampOfFirstDayOfNextMonth < now) {
-            judgeProfitAndLoss(prosumer, year, month);
+            judgeProfitOrLoss(prosumer, year, month);
         }
     }
 
