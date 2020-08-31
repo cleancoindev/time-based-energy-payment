@@ -8,8 +8,10 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./@hq20/contracts/access/Whitelist.sol";
 //import "@hq20/contracts/contracts/access/Whitelist.sol";
 
-/// Use original Ownable.sol
+/// Library
 import "./lib/OwnableOriginal.sol";
+//import "./lib/BokkyPooBahsDateTimeLibrary/contracts/BokkyPooBahsDateTimeContract.sol";
+import "./lib/BokkyPooBahsDateTimeLibrary/contracts/BokkyPooBahsDateTimeLibrary.sol";
 
 /// Storage
 import "./common/McStorage.sol";
@@ -62,57 +64,91 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, Whitelist, McStor
         basePrice = _basePrice;
     }
 
+
+    /***
+     * @notice - Calculate time (unit is "second") of the specified month
+     **/    
+    // function calculateTimeForSpecifiedMonth(uint year, uint month) public view returns (uint calculatedTime) {
+    //     uint startDayOfMonth = 1;
+    //     uint endDayOfMonth = 30;   /// Tentative
+    //     uint timestampForStartingDayOfMonth = BokkyPooBahsDateTimeLibrary.timestampFromDate(year, month, startDayOfMonth);
+    //     uint timestampForEndingDayOfMonth = BokkyPooBahsDateTimeLibrary.timestampFromDate(year, month, endDayOfMonth);
+    // }
+
+
+    /***
+     * @notice - Sample smart meter (This is just sample and will be replaced in the future)
+     *         - Smart meter records value of every month
+     **/
+    function sampleSmartMeter(address prosumer, uint year, uint month) public view returns (uint producedTime, uint producedQuantity, uint consumedTime, uint consumedQuantity) {
+        /// Contant value are assigned so far. (Assigned value will be replaced with oraclized value in the future)
+        uint producedTime;
+        uint producedQuantity;
+        uint consumedTime;
+        uint consumedQuantity;
+        return (producedTime, producedQuantity, consumedTime, consumedQuantity); 
+    }    
+
     /***
      * @notice - Record quantity during time (every month. 1st-30th) from each smart-meter
-     *         - Produced time and consumed time are same.
+     *         - Save each time (produced time / consumed time) of prosumer
      **/
-    function recordSmartMeter(address prosumer, uint timePerMonth, uint producedQuantity, uint consumedQuantity) returns (bool) {
+    function recordSmartMeter(address prosumer, uint year, uint month) public returns (bool) {
+        /// Get producedTime/consumedTime and producedQuantity/consumedQuantity via smart-meter
+        uint producedTime;
+        uint producedQuantity;
+        uint consumedTime;
+        uint consumedQuantity;
+        (producedTime, producedQuantity, consumedTime, consumedQuantity) = sampleSmartMeter(prosumer, year, month);
+
         /// Record quantity of production during time from smart-meter
-        SmartMeterForProduction storage smartMeterForProduction = smartMeterForProductions[prosumer]; 
-        smartMeterForProduction.producedTime = timePerMonth;
+        SmartMeterForProduction storage smartMeterForProduction = smartMeterForProductions[prosumer][year][month];
+        smartMeterForProduction.year = year;
+        smartMeterForProduction.month = month;
+        smartMeterForProduction.producedTime = producedTime;
         smartMeterForProduction.producedQuantity = producedQuantity;
 
         /// Record quantity of consumption during time from smart-meter
-        SmartMeterForConsumption storage smartMeterForConsumption = smartMeterForConsumptions[prosumer]; 
-        smartMeterForConsumption.consumedTime = timePerMonth;
+        SmartMeterForConsumption storage smartMeterForConsumption = smartMeterForConsumptions[prosumer][year][month];
+        smartMeterForConsumption.year = year;
+        smartMeterForConsumption.month = month;
+        smartMeterForConsumption.consumedTime = consumedTime;
         smartMeterForConsumption.consumedQuantity = consumedQuantity;
     }
 
     /***
-     * Check and record smart-meter for getting each time
+     * @notice - Get each time from recorded smart-meter
      **/
-    function getSmartMeter(address prosumer, uint timePerMonth) returns (uint producedQuantity, uint consumedQuantity) {
-        SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[prosumer];
+    function getSmartMeter(address prosumer, uint year, uint month) public returns (uint producedQuantity, uint consumedQuantity) {
+        SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[prosumer][year][month];
         uint producedQuantity = smartMeterForProduction.producedQuantity;
 
-        SmartMeterForConsumption memory smartMeterForConsumption = smartMeterForConsumptions[prosumer]; 
+        SmartMeterForConsumption memory smartMeterForConsumption = smartMeterForConsumptions[prosumer][year][month];
         uint consumedQuantity = smartMeterForConsumption.consumedQuantity;
         return (producedQuantity, consumedQuantity);
     }
 
     /***
-     * @notice - This method is executed for checking prosumer's smart-meter every month.
+     * @notice - Distrubution is executed every month.
      **/
-    function monthlyCheck(address prosumer, uint timePerMonth) public returns (bool) {
-        /// Call the most recent datetime when it was checked before
-        uint lastCheckedDatetime = _lastCheckedDatetime[prosumer];
+    function monthlyDistribution(address prosumer, uint year, uint month) public returns (bool) {
+        /// Calculate timestamp of the first day of next month by using BokkyPooBahsDateTimeLibrary.sol
+        uint nextMonth = month.add(1);
+        uint timestampOfFirstDayOfNextMonth = BokkyPooBahsDateTimeLibrary.timestampFromDate(year, nextMonth, 1);
 
-        /// If now is passed more than 1 month compare to last checked datetime, it will be checked payment amount as a amount of this month
-        uint timeOfThisMonth = timePerMonth;
-        uint checkingTime = lastCheckedDatetime.add(timeOfThisMonth);
-        if (lastCheckedDatetime < now) {
-            judgeProfitAndLoss(timeOfThisMonth);
+        if (timestampOfFirstDayOfNextMonth < now) {
+            judgeProfitOrLoss(prosumer, year, month);
         }
     }
 
     /***
      * @notice - Judge whether user pay consumed amount or get profit or both of no.
      **/
-    function judgeProfitOrLoss(address prosumer, uint timeOfThisMonth) public returns (bool) {
-        SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[prosumer];
+    function judgeProfitOrLoss(address prosumer, uint year, uint month) public returns (bool) {
+        SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[prosumer][year][month];
         uint producedQuantity = smartMeterForProduction.producedQuantity;
 
-        SmartMeterForConsumption memory smartMeterForConsumption = smartMeterForConsumptions[prosumer]; 
+        SmartMeterForConsumption memory smartMeterForConsumption = smartMeterForConsumptions[prosumer][year][month];
         uint consumedQuantity = smartMeterForConsumption.consumedQuantity;
 
         uint targetQuantity;
