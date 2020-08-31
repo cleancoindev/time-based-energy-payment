@@ -66,3 +66,10 @@ $ npm run migrate:kovan
 - @openzeppelin/contract
   - Doc (From @openzeppelin/contract v0.3.x)  
 https://docs.openzeppelin.com/contracts/3.x/erc20
+
+
+<br>
+
+- Article of energy market
+  - How to Build an Energy Market on a Blockchain  
+https://medium.com/coinmonks/how-to-build-an-energy-market-on-a-blockchain-c43b0cfc2d12?source=linkShare-8b51f748f36a-1595734355&_branch_match_id=716987589328688022
