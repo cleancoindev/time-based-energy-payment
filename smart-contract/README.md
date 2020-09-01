@@ -25,7 +25,8 @@
 ***
 
 ## 【Setup】
-### Compile
+### Setup smart-contract
+- Compile
 ```
 cd smart-contract
 
@@ -35,20 +36,11 @@ npm run compile: local
 ```
 
 
-
-
 ### Setup backend
-1. Deploy contracts to Kovan Test Network
-```
-(root directory)
-
-$ npm run migrate:kovan
-```
 
 &nbsp;
 
-
-### Setup frontend（※ In progress）
+### Setup frontend
 
 
 &nbsp;
@@ -65,4 +57,14 @@ $ npm run migrate:kovan
 
 - @openzeppelin/contract
   - Doc (From @openzeppelin/contract v0.3.x)  
-https://docs.openzeppelin.com/contracts/3.x/erc20
+https://docs.openzeppelin.com/contracts/3.x/erc20  
+  
+  - Access Control
+    - How to Use OpenZeppelin’s New AccessControl Contract  
+https://medium.com/better-programming/how-to-use-openzeppelins-new-accesscontrol-contract-5b49a4bcd160
+
+<br>
+
+- Article of energy market
+  - How to Build an Energy Market on a Blockchain  
+https://medium.com/coinmonks/how-to-build-an-energy-market-on-a-blockchain-c43b0cfc2d12?source=linkShare-8b51f748f36a-1595734355&_branch_match_id=716987589328688022
