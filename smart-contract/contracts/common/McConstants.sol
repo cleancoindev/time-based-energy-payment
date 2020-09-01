@@ -7,6 +7,16 @@ import "../lib/EthAddressLib.sol";
 /// @title Shared constants
 contract McConstants {
 
+    /***
+     * @notice Role
+     **/
+    bytes32 public constant PRODUCER_ROLE = keccak256("PRODUCER");
+    bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
+    bytes32 public constant DISTRIBUTOR_ROLE = keccak256("RETAILER_ROLE");
+    bytes32 public constant CONSUMER_ROLE = keccak256("CONSUMER_ROLE");    
+
+
+
     /**
      * @notice Eth address
      */

@@ -1,6 +1,9 @@
 pragma solidity ^0.6.12;
 pragma experimental ABIEncoderV2;
 
+/// Access control
+import "@openzeppelin/contracts/access/AccessControl.sol";
+
 /// Storage
 import "./common/McStorage.sol";
 import "./common/McEvents.sol";
@@ -14,12 +17,15 @@ import "./common/McConstants.sol";
    - Retailers
    - Consumers
  **/
-contract RegisterRole is McStorage, McEvents, McConstants {
+contract RegisterRole is AccessControl, McStorage, McEvents, McConstants {
     using SafeMath for uint;
     
     uint currentUserId;
 
-    constructor () public {}
+    constructor () public AccessControl() {
+        /// [Note]: "DEFAULT_ADMIN_ROLE" is deployer address of EnergyDistributionNetwork.sol
+        /// [Note]: Another role is writted in ./common/McConstant.sol
+    }
 
     function registerAsProducer(address walletAddress) public returns (bool) {
         uint newUserId = getNextUserId();

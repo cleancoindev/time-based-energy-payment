@@ -38,11 +38,6 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Mc
 
     MaticEnergyToken public maticEnergyToken;
 
-    bytes32 public constant PRODUCER_ROLE = keccak256("PRODUCER");
-    bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
-    bytes32 public constant DISTRIBUTOR_ROLE = keccak256("RETAILER_ROLE");
-    bytes32 public constant CONSUMER_ROLE = keccak256("CONSUMER_ROLE");
-
     /**
      * @dev - The constructor initializes the underlying currency token and the smart meter whitelist. 
      *      - The constructor also mints the requested amount of the underlying currency token to fund the network load. 
@@ -61,6 +56,7 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Mc
         basePrice = _basePrice;
 
         /// Set up the Admin role
+        /// [Note]: Another role is writted in ./common/McConstant.sol
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
