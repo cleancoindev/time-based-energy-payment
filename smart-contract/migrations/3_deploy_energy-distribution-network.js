@@ -25,7 +25,7 @@ module.exports = async function(deployer, network, accounts) {
                   //         await maticEnergy.transferOwnership(ownerAddress);
                   //     }
                   // }
-    );
+    // );
 
     //@dev - Transfer 2.1 DAI from deployer's address to contract address in advance
     // const noLossFundraising = await NoLossFundraising.deployed();
