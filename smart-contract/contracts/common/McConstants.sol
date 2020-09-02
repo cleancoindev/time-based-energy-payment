@@ -8,11 +8,12 @@ import "../lib/EthAddressLib.sol";
 contract McConstants {
 
     /***
-     * @notice Role
+     * @notice - Define each roles for access control
+     *         - by using "@openzeppelin/contracts/access/AccessControl.sol";
      **/
     bytes32 public constant PRODUCER_ROLE = keccak256("PRODUCER");
     bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
-    bytes32 public constant DISTRIBUTOR_ROLE = keccak256("RETAILER_ROLE");
+    bytes32 public constant RETAILER_ROLE = keccak256("RETAILER_ROLE");
     bytes32 public constant CONSUMER_ROLE = keccak256("CONSUMER_ROLE");    
 
 
