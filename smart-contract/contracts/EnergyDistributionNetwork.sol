@@ -7,11 +7,11 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";  /// Access control
 
 /// *** Using @hq/contracts v0.0.2 *** 
-import "./@hq20/contracts/access/Whitelist.sol";
+//import "./@hq20/contracts/access/Whitelist.sol";
 //import "@hq20/contracts/contracts/access/Whitelist.sol";
 
 /// Library
-import "./lib/OwnableOriginal.sol";
+//import "./lib/OwnableOriginal.sol";
 //import "./lib/BokkyPooBahsDateTimeLibrary/contracts/BokkyPooBahsDateTimeContract.sol";
 import "./lib/BokkyPooBahsDateTimeLibrary/contracts/BokkyPooBahsDateTimeLibrary.sol";
 
