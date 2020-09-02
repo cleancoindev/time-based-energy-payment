@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";  /// Access control
 //import "@hq20/contracts/contracts/access/Whitelist.sol";
 
 /// Library
-//import "./lib/OwnableOriginal.sol";
+import "./lib/OwnableOriginal.sol";
 //import "./lib/BokkyPooBahsDateTimeLibrary/contracts/BokkyPooBahsDateTimeContract.sol";
 import "./lib/BokkyPooBahsDateTimeLibrary/contracts/BokkyPooBahsDateTimeLibrary.sol";
 
@@ -34,7 +34,7 @@ import "./TimeBasedPaymentFormula.sol";
  * @dev - ERC20 is used to enable payments from the consumers to the distribution network, represented by this contract, and from the distribution network to the producers. 
  * @dev - Whitelist is used to keep a list of compliant smart meters that communicate the production and consumption of energy.
  **/
-contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, McStorage, McEvents, McModifiers, McConstants {
+contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, OwnableOriginal,McStorage, McEvents, McModifiers, McConstants {
     using SafeMath for uint;
 
     MaticEnergyToken public maticEnergyToken;
@@ -48,6 +48,7 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Mc
         public
         TimeBasedPaymentFormula()
         AccessControl()
+        OwnableOriginal(msg.sender)
     {
         maticEnergyToken = MaticEnergyToken(_maticEnergyToken);
 

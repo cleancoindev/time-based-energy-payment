@@ -19,13 +19,13 @@ module.exports = async function(deployer, network, accounts) {
 
     //await deployer.deploy(EnergyDistributionNetwork)
     await deployer.deploy(EnergyDistributionNetwork, _maticEnergyToken, _initialMember)
-                  // .then(async function(maticEnergy) {
-                  //     if(ownerAddress && ownerAddress!="") {
-                  //         console.log(`=== Transfering ownership to address ${ownerAddress} ===`)
-                  //         await maticEnergy.transferOwnership(ownerAddress);
-                  //     }
-                  // }
-    // );
+                  .then(async function(maticEnergy) {
+                      if(ownerAddress && ownerAddress!="") {
+                          console.log(`=== Transfering ownership to address ${ownerAddress} ===`)
+                          await maticEnergy.transferOwnership(ownerAddress);
+                      }
+                  }
+    );
 
     //@dev - Transfer 2.1 DAI from deployer's address to contract address in advance
     // const noLossFundraising = await NoLossFundraising.deployed();
