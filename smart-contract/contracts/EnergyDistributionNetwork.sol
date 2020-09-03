@@ -142,6 +142,9 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
      * @notice - Judge whether user pay consumed amount or get profit or both of no.
      **/
     function judgeProfitOrLoss(address prosumer, uint year, uint month) public returns (bool) {
+        /// Check that the calling account has the admin role - from AccessControl.sol
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not a admin user");        
+
         SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[prosumer][year][month];
         uint producedQuantity = smartMeterForProduction.producedQuantity;
 
