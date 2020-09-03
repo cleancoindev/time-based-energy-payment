@@ -34,7 +34,7 @@ import "./TimeBasedPaymentFormula.sol";
  * @dev - ERC20 is used to enable payments from the consumers to the distribution network, represented by this contract, and from the distribution network to the producers. 
  * @dev - Whitelist is used to keep a list of compliant smart meters that communicate the production and consumption of energy.
  **/
-contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, OwnableOriginal,McStorage, McEvents, McModifiers, McConstants {
+contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, OwnableOriginal, McStorage, McEvents, McModifiers, McConstants {
     using SafeMath for uint;
 
     MaticEnergyToken public maticEnergyToken;
@@ -44,7 +44,7 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
      *      - The constructor also mints the requested amount of the underlying currency token to fund the network load. 
      *      - Also sets the base energy price, used for calculating prices.
      */
-    constructor (address _maticEnergyToken, address initialMember)
+    constructor (address _maticEnergyToken, address adminUser)
         public
         TimeBasedPaymentFormula()
         AccessControl()
@@ -58,7 +58,7 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
 
         /// Set up the Admin role
         /// [Note]: Another role is writted in ./common/McConstant.sol
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _setupRole(DEFAULT_ADMIN_ROLE, adminUser);
     }
 
 

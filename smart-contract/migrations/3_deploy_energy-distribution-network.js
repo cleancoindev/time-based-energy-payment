@@ -10,7 +10,7 @@ var walletAddressList = require('./walletAddress/walletAddress.js');
 //const _basePrice = 3000000000000000
 
 const _maticEnergyToken = MaticEnergyToken.address;
-const _initialMember = "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1";  /// Ganache-CLI -d accounts[1]
+const _adminUser = "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1";  /// Ganache-CLI -d accounts[1]
 
 
 module.exports = async function(deployer, network, accounts) {
@@ -18,7 +18,7 @@ module.exports = async function(deployer, network, accounts) {
     let ownerAddress = "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1";  /// Ganache-CLI -d accounts[1]
 
     //await deployer.deploy(EnergyDistributionNetwork)
-    await deployer.deploy(EnergyDistributionNetwork, _maticEnergyToken, _initialMember)
+    await deployer.deploy(EnergyDistributionNetwork, _maticEnergyToken, _adminUser)
                   .then(async function(maticEnergy) {
                       if(ownerAddress && ownerAddress!="") {
                           console.log(`=== Transfering ownership to address ${ownerAddress} ===`)
