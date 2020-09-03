@@ -30,7 +30,7 @@ import "./TimeBasedPaymentFormula.sol";
 
 /***
  * @notice - This contract is that ...
- * @dev - Implements a simple energy market, using ERC20 and Whitelist. 
+ * @dev - Implements a simple energy market, using ERC20 and AccessControl. 
  * @dev - ERC20 is used to enable payments from the consumers to the distribution network, represented by this contract, and from the distribution network to the producers. 
  * @dev - Whitelist is used to keep a list of compliant smart meters that communicate the production and consumption of energy.
  **/

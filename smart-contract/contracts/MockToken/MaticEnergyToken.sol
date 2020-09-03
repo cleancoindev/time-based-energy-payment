@@ -13,9 +13,9 @@ contract MaticEnergyToken is ERC20 {
     using SafeMath for uint;
 
     constructor() ERC20("MaticEnergyToken", "MET") public {
-        uint256 _initialSupply = 1e2;     /// 100
-        //uint256 _initialSupply = 1e20;  /// 100
-        uint _decimals = 1e18;
+        uint256 _initialSupply = 1e20;    /// 100 MET
+        //uint256 _initialSupply = 1e20;  /// 100 MET
+        uint _decimals = 1e18;            ///   1 MET 
         uint initialSupply = _initialSupply.mul(_decimals);  /// Initial Supply amount is 100M
         
         address initialTokenHolder = msg.sender;
