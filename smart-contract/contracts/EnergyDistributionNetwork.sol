@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";  /// Access control
 
 /// *** Using @hq/contracts v0.0.2 *** 
-import "./@hq20/contracts/access/Whitelist.sol";
+//import "./@hq20/contracts/access/Whitelist.sol";
 //import "@hq20/contracts/contracts/access/Whitelist.sol";
 
 /// Library
@@ -18,6 +18,7 @@ import "./lib/BokkyPooBahsDateTimeLibrary/contracts/BokkyPooBahsDateTimeLibrary.
 /// Storage
 import "./common/McStorage.sol";
 import "./common/McEvents.sol";
+import "./common/McModifiers.sol";
 import "./common/McConstants.sol";
 
 /// ERC20 token for paying for energy production and consumption
@@ -33,7 +34,7 @@ import "./TimeBasedPaymentFormula.sol";
  * @dev - ERC20 is used to enable payments from the consumers to the distribution network, represented by this contract, and from the distribution network to the producers. 
  * @dev - Whitelist is used to keep a list of compliant smart meters that communicate the production and consumption of energy.
  **/
-contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, McStorage, McEvents, McConstants {
+contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, OwnableOriginal, McStorage, McEvents, McModifiers, McConstants {
     using SafeMath for uint;
 
     MaticEnergyToken public maticEnergyToken;
@@ -43,21 +44,21 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Mc
      *      - The constructor also mints the requested amount of the underlying currency token to fund the network load. 
      *      - Also sets the base energy price, used for calculating prices.
      */
-    constructor (address _maticEnergyToken, address initialMember)
+    constructor (address _maticEnergyToken, address adminUser)
         public
         TimeBasedPaymentFormula()
         AccessControl()
+        OwnableOriginal(msg.sender)
     {
         maticEnergyToken = MaticEnergyToken(_maticEnergyToken);
 
         //uint256 _initialSupply = 1e20;  /// 100 MET
-        uint128 _basePrice = 1e18;        ///   1 MET (Current energy price = MET/kw)
-
-        basePrice = _basePrice;
+        //uint128 _basePrice = 1e18;      ///   1 MET (Current energy price = MET/kw)
+        //basePrice = _basePrice;
 
         /// Set up the Admin role
         /// [Note]: Another role is writted in ./common/McConstant.sol
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _setupRole(DEFAULT_ADMIN_ROLE, adminUser);
     }
 
 
