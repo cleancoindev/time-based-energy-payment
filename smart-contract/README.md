@@ -1,7 +1,7 @@
-# Matic Energy ⚡️
+# Time based energy payment ⚡️
 
 ***
-## 【Introduction of Matic Energy ⚡️】
+## 【Introduction of the time based energy payment ⚡️】
 - How it works ?
   - Payment: using the Matic Network / ERC20 token
   - Smart contract: using the solidity/truffle.

@@ -30,7 +30,7 @@ import "./TimeBasedPaymentFormula.sol";
 
 /***
  * @notice - This contract is that ...
- * @dev - Implements a simple energy market, using ERC20 and Whitelist. 
+ * @dev - Implements a simple energy market, using ERC20 and AccessControl. 
  * @dev - ERC20 is used to enable payments from the consumers to the distribution network, represented by this contract, and from the distribution network to the producers. 
  * @dev - Whitelist is used to keep a list of compliant smart meters that communicate the production and consumption of energy.
  **/
@@ -142,6 +142,9 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
      * @notice - Judge whether user pay consumed amount or get profit or both of no.
      **/
     function judgeProfitOrLoss(address prosumer, uint year, uint month) public returns (bool) {
+        /// Check that the calling account has the admin role - from AccessControl.sol
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not a admin user");        
+
         SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[prosumer][year][month];
         uint producedQuantity = smartMeterForProduction.producedQuantity;
 
@@ -165,5 +168,23 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
         }
     }
 
+
+    /***
+     * @notice - The monthly invoice
+     **/
+    function getMontlyInvoice() public view returns (bool res) {
+        UserWithWalletAddress memory userWithWalletAddress = getUserWithWalletAddress(msg.sender);
+        require (userWithWalletAddress.role == Role.Producer || userWithWalletAddress.role == Role.Consumer, "Caller's role must be producer or consumer");
+        
+        /// In progress
+    }
+
+
+    function getUserWithWalletAddress(address walletAddress) public view returns (UserWithWalletAddress memory userWithWalletAddress) {
+        UserWithWalletAddress memory userWithWalletAddress = userWithWalletAddresses[walletAddress];
+        return userWithWalletAddress;
+    }
+    
+    
     
 }
