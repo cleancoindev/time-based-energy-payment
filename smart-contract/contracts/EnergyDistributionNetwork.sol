@@ -168,5 +168,16 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
         }
     }
 
+
+    /***
+     * @notice - The monthly invoice
+     **/
+    function getMontlyInvoice(uint userId) public view returns (bool res) {
+        User memory user = users[userId];
+        require (user.role == 0 || user.role == 3, "Caller's role must be producer or consumer");
+        
+        /// In progress
+    }
+    
     
 }

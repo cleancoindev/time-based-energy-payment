@@ -24,14 +24,14 @@ contract MaticEnergyToken is ERC20, AccessControl {
         address initialTokenHolder = msg.sender;
         _mint(initialTokenHolder, initialSupply);
 
-        /// Set Role
-        address MINTER_ROLE = msg.sender;
+        // Grant the minter role to a specified account
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);        
     }
 
     function mint(address to, uint256 mintAmount) public {
         // Check that the calling account has the minter role
-        require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a minter");
-        _mint(to, amount);
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not a admin");
+        _mint(to, mintAmount);
     }
 
 }
