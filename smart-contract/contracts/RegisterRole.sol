@@ -38,7 +38,12 @@ contract RegisterRole is AccessControl, McStorage, McEvents, McModifiers, McCons
         User storage user = users[newUserId];
         user.userId = newUserId;
         user.role = Role.Producer;  /// enum
-        user.walletAddress = walletAddress;        
+        user.walletAddress = walletAddress;  
+
+        UserWithWalletAddress storage userWithWalletAddress = userWithWalletAddresses[walletAddress];          
+        userWithWalletAddress.userId = newUserId;
+        userWithWalletAddress.role = Role.Producer;  /// enum
+        userWithWalletAddress.walletAddress = walletAddress;  
     }
 
     function registerAsDistributor(address walletAddress) public returns (bool) {
