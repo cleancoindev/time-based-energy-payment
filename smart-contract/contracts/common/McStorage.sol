@@ -7,7 +7,8 @@ import "./McObjects.sol";
 contract McStorage is McObjects {
 
     mapping (uint => User) users;  /// Key: userId
-    
+    mapping (address => UserWithWalletAddress) userWithWalletAddresses;  /// Key: user's wallet address
+
     mapping (address => uint) _lastCheckedDatetime;  /// Key: prosumer's address
 
     /// Smart Meter
