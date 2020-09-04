@@ -173,11 +173,18 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
      * @notice - The monthly invoice
      **/
     function getMontlyInvoice() public view returns (bool res) {
-        UserWithWalletAddress memory userWithWalletAddress = userWithWalletAddresses[msg.sender];
+        UserWithWalletAddress memory userWithWalletAddress = getUserWithWalletAddress(msg.sender);
         require (userWithWalletAddress.role == Role.Producer || userWithWalletAddress.role == Role.Consumer, "Caller's role must be producer or consumer");
         
         /// In progress
     }
+
+
+    function getUserWithWalletAddress(address walletAddress) public view returns (UserWithWalletAddress memory userWithWalletAddress) {
+        UserWithWalletAddress memory userWithWalletAddress = userWithWalletAddresses[walletAddress];
+        return userWithWalletAddress;
+    }
+    
     
     
 }
