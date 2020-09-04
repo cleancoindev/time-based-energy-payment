@@ -44,6 +44,10 @@ contract RegisterRole is AccessControl, McStorage, McEvents, McModifiers, McCons
         userWithWalletAddress.userId = newUserId;
         userWithWalletAddress.role = Role.Producer;  /// enum
         userWithWalletAddress.walletAddress = walletAddress;  
+
+        /// Set up the Producer role
+        /// [Note]: Producer role is writted in ./common/McConstant.sol
+        _setupRole(DISTRIBUTOR_ROLE, user.walletAddress);        
     }
 
     function registerAsDistributor(address walletAddress) public returns (bool) {
@@ -54,6 +58,10 @@ contract RegisterRole is AccessControl, McStorage, McEvents, McModifiers, McCons
         user.userId = newUserId;
         user.role = Role.Distributor;  /// enum
         user.walletAddress = walletAddress;
+
+        /// Set up the Distributor role
+        /// [Note]: Distributor role is writted in ./common/McConstant.sol
+        _setupRole(DISTRIBUTOR_ROLE, user.walletAddress);
     }
 
     function registerAsRetailer(address walletAddress) public returns (bool) {
@@ -64,6 +72,10 @@ contract RegisterRole is AccessControl, McStorage, McEvents, McModifiers, McCons
         user.userId = newUserId;
         user.role = Role.Retailer;  /// enum
         user.walletAddress = walletAddress;        
+
+        /// Set up the Retailer role
+        /// [Note]: Retailer role is writted in ./common/McConstant.sol
+        _setupRole(RETAILER_ROLE, user.walletAddress);
     }
 
     function registerAsConsumer(address walletAddress) public returns (bool) {
@@ -74,6 +86,10 @@ contract RegisterRole is AccessControl, McStorage, McEvents, McModifiers, McCons
         user.userId = newUserId;
         user.role = Role.Retailer;  /// enum
         user.walletAddress = walletAddress;
+
+        /// Set up the Consumer role
+        /// [Note]: Consumer role is writted in ./common/McConstant.sol
+        _setupRole(CONSUMER_ROLE, user.walletAddress);
     }
 
     
