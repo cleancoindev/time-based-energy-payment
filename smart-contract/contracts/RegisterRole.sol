@@ -36,6 +36,7 @@ contract RegisterRole is AccessControl, McStorage, McEvents, McModifiers, McCons
         currentUserId++;
 
         User storage user = users[newUserId];
+        user.userId = newUserId;
         user.role = Role.Producer;  /// enum
         user.walletAddress = walletAddress;        
     }
@@ -45,6 +46,7 @@ contract RegisterRole is AccessControl, McStorage, McEvents, McModifiers, McCons
         currentUserId++;
 
         User storage user = users[newUserId];
+        user.userId = newUserId;
         user.role = Role.Distributor;  /// enum
         user.walletAddress = walletAddress;
     }
@@ -54,6 +56,7 @@ contract RegisterRole is AccessControl, McStorage, McEvents, McModifiers, McCons
         currentUserId++;
 
         User storage user = users[newUserId];
+        user.userId = newUserId;
         user.role = Role.Retailer;  /// enum
         user.walletAddress = walletAddress;        
     }
@@ -63,6 +66,7 @@ contract RegisterRole is AccessControl, McStorage, McEvents, McModifiers, McCons
         currentUserId++;
 
         User storage user = users[newUserId];
+        user.userId = newUserId;
         user.role = Role.Retailer;  /// enum
         user.walletAddress = walletAddress;
     }
