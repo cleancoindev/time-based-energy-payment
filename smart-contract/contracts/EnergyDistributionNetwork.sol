@@ -217,11 +217,11 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
     function getMontlyInvoice() public view returns (bool res) {
         UserWithWalletAddress memory userWithWalletAddress = getUserWithWalletAddress(msg.sender);
 
-        /// The way① for checking that the calling account has the producer/consumer role <-- This is better than the way② below
-        require(hasRole(PRODUCER_ROLE, msg.sender) || hasRole(CONSUMER_ROLE, msg.sender), "Caller should be the producer role or the consuber role");
+        /// The way① for checking that the calling account has the prosumer role <-- This is better than the way② below
+        require(hasRole(PROSUMER_ROLE, msg.sender), "Caller should be the prosumer role");
 
-        /// The way② for checking that the calling account has the producer/consumer role
-        require (userWithWalletAddress.role == Role.Producer || userWithWalletAddress.role == Role.Consumer, "Caller's role must be producer or consumer");
+        /// The way② for checking that the calling account has the prosumer role
+        require (userWithWalletAddress.role == Role.Prosumer, "Caller's role must be prosumer");
         
         /// In progress
     }
