@@ -133,15 +133,34 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
         uint nextMonth = month.add(1);
         uint timestampOfFirstDayOfNextMonth = BokkyPooBahsDateTimeLibrary.timestampFromDate(year, nextMonth, 1);
 
+        /// Execute distribution
+        uint targetQuantity;
+        string memory payer;
+        string memory payee;
+        uint paymentAmount;
+        uint producedQuantity;
+        uint consumedQuantity;
+
         if (timestampOfFirstDayOfNextMonth < now) {
-            judgeProfitOrLoss(prosumer, year, month);
+            (payer, payee, paymentAmount, targetQuantity, producedQuantity, consumedQuantity) = judgeProfitOrLoss(prosumer, year, month);
         }
+
+        /// Record a result of this month into the invoice
+
     }
 
     /***
      * @notice - Judge whether user pay consumed amount or get profit or both of no.
      **/
-    function judgeProfitOrLoss(address prosumer, uint year, uint month) public returns (bool) {
+    function judgeProfitOrLoss(address prosumer, uint year, uint month) 
+        public 
+        returns (string memory _payer, 
+                 string memory _payee, 
+                 uint _paymentAmount, 
+                 uint _targetQuantity, 
+                 uint _producedQuantity, 
+                 uint _consumedQuantity) 
+    {
         /// Check that the calling account has the admin role - from AccessControl.sol
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not a admin user");        
 
@@ -152,21 +171,44 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
         uint consumedQuantity = smartMeterForConsumption.consumedQuantity;
 
         uint targetQuantity;
+        string memory payer;
+        string memory payee;
+        uint paymentAmount;
         if (producedQuantity > consumedQuantity) {
-            targetQuantity = producedQuantity.sub(consumedQuantity);   /// In case of this, user get profit
-            uint paymentAmount = distributionAmount(targetQuantity);
+            /// Identify which is payer/payee.
+            payer = "EnergyDistributionNetwork contract";
+            payee = "Prosumer";
+
             /// Distribution from contract (distribution network) to user (producer)
+            targetQuantity = producedQuantity.sub(consumedQuantity);   /// In case of this, user get profit
+            paymentAmount = distributionAmount(targetQuantity);
             maticEnergyToken.transfer(msg.sender, paymentAmount);
+
         } else if (producedQuantity < consumedQuantity) {
-            targetQuantity = consumedQuantity.sub(producedQuantity);   /// In case of this, user pay for substracted amount
-            uint paymentAmount = distributionAmount(targetQuantity);
+            /// Identify which is payer/payee.
+            payer = "Prosumer";
+            payee = "EnergyDistributionNetwork contract";
+
             /// Distribution from user (consumer) to contract (distribution network)
+            targetQuantity = consumedQuantity.sub(producedQuantity);   /// In case of this, user pay for substracted amount
+            paymentAmount = distributionAmount(targetQuantity);
             maticEnergyToken.transferFrom(msg.sender, address(this), paymentAmount);
+
         } else if (producedQuantity == consumedQuantity) {
-            targetQuantity = 0;                                       /// In case of this, user is no pay for any amount and no get profit
-            uint paymentAmount = 0;      /// Result: 0
+            /// Identify which is payer/payee.
+            payer = "No payer";
+            payee = "No payee";            
+
+            /// In case of this, there is no distribution
+            targetQuantity = 0;      /// In case of this, user is no pay for any amount and no get profit
+            paymentAmount = 0;  /// Result: 0
         }
+
+        return (payer, payee, paymentAmount, targetQuantity, producedQuantity, consumedQuantity);
     }
+
+
+
 
 
     /***
@@ -175,11 +217,11 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
     function getMontlyInvoice() public view returns (bool res) {
         UserWithWalletAddress memory userWithWalletAddress = getUserWithWalletAddress(msg.sender);
 
-        /// The way① for checking that the calling account has the producer/consumer role <-- This is better than the way② below
-        require(hasRole(PRODUCER_ROLE, msg.sender) || hasRole(CONSUMER_ROLE, msg.sender), "Caller should be the producer role or the consuber role");
+        /// The way① for checking that the calling account has the prosumer role <-- This is better than the way② below
+        require(hasRole(PROSUMER_ROLE, msg.sender), "Caller should be the prosumer role");
 
-        /// The way② for checking that the calling account has the producer/consumer role
-        require (userWithWalletAddress.role == Role.Producer || userWithWalletAddress.role == Role.Consumer, "Caller's role must be producer or consumer");
+        /// The way② for checking that the calling account has the prosumer role
+        require (userWithWalletAddress.role == Role.Prosumer, "Caller's role must be prosumer");
         
         /// In progress
     }
