@@ -23,19 +23,30 @@ contract McObjects {
         address walletAddress;
     }
 
-    struct SmartMeterForProduction {   /// Key: address of producer --> year --> month
+    struct SmartMeterForProduction {   /// Key: address of prosumer --> year --> month
         uint year;
         uint month;
         uint producedTime;       /// second
         uint producedQuantity;   /// kw/h
     }
 
-    struct SmartMeterForConsumption {   /// Key: address of consumer --> year --> month
+    struct SmartMeterForConsumption {   /// Key: address of prosumer --> year --> month
         uint year;
         uint month;
         uint consumedTime;      /// second
         uint consumedQuantity;  /// kw/h
+    }
+
+    struct MonthlyInvoice {   /// Key: address of prosumer --> year --> month
+        address prosumer;
+        uint year;
+        uint month;
+        string payer;
+        string payee;
+        uint paymentAmount;
+        uint targetQuantity;
+        uint producedQuantity;
+        uint consumedQuantity;
     }    
-    
 
 }

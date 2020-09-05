@@ -134,10 +134,10 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
         uint timestampOfFirstDayOfNextMonth = BokkyPooBahsDateTimeLibrary.timestampFromDate(year, nextMonth, 1);
 
         /// Execute distribution
-        uint targetQuantity;
         string memory payer;
         string memory payee;
         uint paymentAmount;
+        uint targetQuantity;
         uint producedQuantity;
         uint consumedQuantity;
 
@@ -146,7 +146,16 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
         }
 
         /// Record a result of this month into the invoice
-
+        MonthlyInvoice storage monthlyInvoice = monthlyInvoices[prosumer][year][month];
+        monthlyInvoice.prosumer = prosumer;
+        monthlyInvoice.year = year;
+        monthlyInvoice.month = month;
+        monthlyInvoice.payer = payer;
+        monthlyInvoice.payee = payee;
+        monthlyInvoice.paymentAmount = paymentAmount;
+        monthlyInvoice.targetQuantity = targetQuantity;
+        monthlyInvoice.producedQuantity = producedQuantity;
+        monthlyInvoice.consumedQuantity = consumedQuantity;        
     }
 
     /***
@@ -214,7 +223,7 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
     /***
      * @notice - The monthly invoice
      **/
-    function getMontlyInvoice() public view returns (bool res) {
+    function getMontlyInvoice(address prosumer, uint year, uint month) public view returns (MonthlyInvoice memory monthlyInvoice) {
         UserWithWalletAddress memory userWithWalletAddress = getUserWithWalletAddress(msg.sender);
 
         /// The way① for checking that the calling account has the prosumer role <-- This is better than the way② below
@@ -222,8 +231,10 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
 
         /// The way② for checking that the calling account has the prosumer role
         require (userWithWalletAddress.role == Role.Prosumer, "Caller's role must be prosumer");
-        
-        /// In progress
+
+        /// Get the monthly invoice of specified prosumer
+        MonthlyInvoice memory monthlyInvoice = monthlyInvoices[prosumer][year][month];
+        return monthlyInvoice;
     }
 
 
