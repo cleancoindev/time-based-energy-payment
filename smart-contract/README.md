@@ -2,13 +2,10 @@
 
 ***
 ## 【Introduction of the time based energy payment ⚡️】
-- How it works ?
-  - Payment: using the Matic Network / ERC20 token
-  - Smart contract: using the solidity/truffle.
-
+- This is the smart-contract for realizing the time based energy payment.
+- Payment: using the Matic Network of layer 2 solution for avoiding expensive gas fee when payment tokens (ERC20) are transferred.
 
 <br>
-
 
 - Stack
   - Solidity-v0.6.12
@@ -18,6 +15,13 @@
 &nbsp;
 
 ## 【User Flow】
+① User register as a "prosumer" (Both of producer and consumer)
+② Measured values of the smart-meter are measured at the end of every month by instruction of smart-contract.
+  (measured smart-meter are both that from production and from consumption)
+③ Measured values from production and measured value from consumption are compared.
+④ Transfer  
+・If the measured value from production is greater than measured value from consumption, the smart-contract transfer payment tokens into the prosumer's wallet.
+・If the measured value from consumption is greater than measured value from production, the prosumer transfer payment tokens into the smart-contract.
 
 
 &nbsp;
