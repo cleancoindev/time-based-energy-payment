@@ -77,13 +77,14 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
      * @notice - Sample smart meter (This is just sample and will be replaced in the future)
      *         - Smart meter records value of every month
      **/
-    function sampleSmartMeter(address prosumer, uint year, uint month) public view returns (uint producedTime, uint producedQuantity, uint consumedTime, uint consumedQuantity) {
+    function sampleSmartMeter(address prosumer, uint year, uint month) public view returns (EnergyType energyType, uint producedTime, uint producedQuantity, uint consumedTime, uint consumedQuantity) {
         /// Contant value are assigned so far. (Assigned value will be replaced with oraclized value in the future)
+        EnergyType energyType = EnergyType.SolarPower;  /// e.g). The Solar Power is specified as a energy type which measured by this smart-meter.
         uint producedTime;
         uint producedQuantity;
         uint consumedTime;
         uint consumedQuantity;
-        return (producedTime, producedQuantity, consumedTime, consumedQuantity); 
+        return (energyType, producedTime, producedQuantity, consumedTime, consumedQuantity); 
     }    
 
     /***
@@ -92,16 +93,18 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
      **/
     function recordSmartMeter(address prosumer, uint year, uint month) public returns (bool) {
         /// Get producedTime/consumedTime and producedQuantity/consumedQuantity via smart-meter
+        EnergyType energyType;
         uint producedTime;
         uint producedQuantity;
         uint consumedTime;
         uint consumedQuantity;
-        (producedTime, producedQuantity, consumedTime, consumedQuantity) = sampleSmartMeter(prosumer, year, month);
+        (energyType, producedTime, producedQuantity, consumedTime, consumedQuantity) = sampleSmartMeter(prosumer, year, month);
 
         /// Record quantity of production during time from smart-meter
         SmartMeterForProduction storage smartMeterForProduction = smartMeterForProductions[prosumer][year][month];
         smartMeterForProduction.year = year;
         smartMeterForProduction.month = month;
+        smartMeterForProduction.energyType = energyType;
         smartMeterForProduction.producedTime = producedTime;
         smartMeterForProduction.producedQuantity = producedQuantity;
 
@@ -109,6 +112,7 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
         SmartMeterForConsumption storage smartMeterForConsumption = smartMeterForConsumptions[prosumer][year][month];
         smartMeterForConsumption.year = year;
         smartMeterForConsumption.month = month;
+        smartMeterForConsumption.energyType = energyType;
         smartMeterForConsumption.consumedTime = consumedTime;
         smartMeterForConsumption.consumedQuantity = consumedQuantity;
     }
@@ -137,25 +141,22 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
         string memory payer;
         string memory payee;
         uint paymentAmount;
+        EnergyType energyTypeFromSmartMeterOfProduction;   /// Smart-meter from the production
+        EnergyType energyTypeFromSmartMeterOfConsumption;  /// Smart-meter from the consumption
         uint targetQuantity;
         uint producedQuantity;
         uint consumedQuantity;
 
         if (timestampOfFirstDayOfNextMonth < now) {
+            /// Call payment information
             (payer, payee, paymentAmount, targetQuantity, producedQuantity, consumedQuantity) = judgeProfitOrLoss(prosumer, year, month);
+
+            /// Call the Energy-Type of each smart-meter
+            (energyTypeFromSmartMeterOfProduction, energyTypeFromSmartMeterOfConsumption) = callEnergyTypeOfSmartMeter(prosumer, year, month);
         }
 
         /// Record a result of this month into the invoice
-        MonthlyInvoice storage monthlyInvoice = monthlyInvoices[prosumer][year][month];
-        monthlyInvoice.prosumer = prosumer;
-        monthlyInvoice.year = year;
-        monthlyInvoice.month = month;
-        monthlyInvoice.payer = payer;
-        monthlyInvoice.payee = payee;
-        monthlyInvoice.paymentAmount = paymentAmount;
-        monthlyInvoice.targetQuantity = targetQuantity;
-        monthlyInvoice.producedQuantity = producedQuantity;
-        monthlyInvoice.consumedQuantity = consumedQuantity;        
+        saveResultIntoMonthlyInvoice(prosumer, year, month, payer, payee, paymentAmount, energyTypeFromSmartMeterOfProduction, energyTypeFromSmartMeterOfConsumption, targetQuantity, producedQuantity, consumedQuantity);
     }
 
     /***
@@ -216,10 +217,58 @@ contract EnergyDistributionNetwork is TimeBasedPaymentFormula, AccessControl, Ow
         return (payer, payee, paymentAmount, targetQuantity, producedQuantity, consumedQuantity);
     }
 
+    /***
+     * @notice - Save the measured result from each smart-meter into the monthly invoice.
+     **/
+    function saveResultIntoMonthlyInvoice(
+        address prosumer, 
+        uint year, 
+        uint month, 
+        string memory payer,
+        string memory payee,
+        uint paymentAmount,
+        EnergyType energyTypeFromSmartMeterOfProduction,
+        EnergyType energyTypeFromSmartMeterOfConsumption,
+        uint targetQuantity,
+        uint producedQuantity,
+        uint consumedQuantity
+    ) public returns (bool) {
+        /// Record a result of this month into the invoice
+        MonthlyInvoice storage monthlyInvoice = monthlyInvoices[prosumer][year][month];
+        monthlyInvoice.prosumer = prosumer;
+        monthlyInvoice.year = year;
+        monthlyInvoice.month = month;
+        monthlyInvoice.payer = payer;
+        monthlyInvoice.payee = payee;
+        monthlyInvoice.paymentAmount = paymentAmount;
+        monthlyInvoice.energyTypeFromSmartMeterOfProduction = energyTypeFromSmartMeterOfProduction;
+        monthlyInvoice.energyTypeFromSmartMeterOfConsumption = energyTypeFromSmartMeterOfConsumption;
+        monthlyInvoice.targetQuantity = targetQuantity;
+        monthlyInvoice.producedQuantity = producedQuantity;
+        monthlyInvoice.consumedQuantity = consumedQuantity;           
+    }
 
 
+    /////////// Getter Functions from below ///////////
 
+    /***
+     * @notice - Call the energy-type of each smart-meter
+     **/
+    function callEnergyTypeOfSmartMeter(address prosumer, uint year, uint month) 
+        public 
+        view 
+        returns (EnergyType _energyTypeFromSmartMeterOfProduction, 
+                 EnergyType _energyTypeFromSmartMeterOfConsumption)  
+    {
+        SmartMeterForProduction memory smartMeterForProduction = smartMeterForProductions[prosumer][year][month];
+        EnergyType energyTypeFromSmartMeterOfProduction = smartMeterForProduction.energyType;
 
+        SmartMeterForConsumption memory smartMeterForConsumption = smartMeterForConsumptions[prosumer][year][month];
+        EnergyType energyTypeFromSmartMeterOfConsumption = smartMeterForConsumption.energyType;
+
+        return (energyTypeFromSmartMeterOfProduction, energyTypeFromSmartMeterOfConsumption);  
+    }
+    
     /***
      * @notice - The monthly invoice
      **/
